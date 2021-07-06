@@ -23,17 +23,17 @@ export const SumPage: React.FC = ( ) => {
   //   .catch(err => {
   //     console.error(err)
   //   })
+
   const getData = async ()=>{
     Taro.cloud.callFunction({
       name:'sum'
     }).then(res=>{
-      setSum( res.result  )
-      // console.log(typeof res.result)
+      setSum( (res.result as {data:any[]}).data)
     })
   }
   return (
       <View className='line-first'>
-         <Button size='mini' type='primary' onClick={getData}>重新获取</Button>
+         <Button size='mini' type='primary'   onClick={getData} >重新获取</Button>
         {/* <View>{sum} </View>   */}
         <View >
           {

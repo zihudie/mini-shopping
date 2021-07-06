@@ -5,9 +5,9 @@ import './index.scss'
 
 import Login from '../../components/login/index'
 import {SumPage} from './components/sum/index'
+import {GuidePage} from './components/guide/index'
 
 export default class Index extends Component {
-
   componentWillMount () { }
 
   componentDidMount () { }
@@ -23,6 +23,7 @@ export default class Index extends Component {
       <View className='index'>
         <Login/>
         <SumPage/>
+        <GuidePage/>
       </View>
     )
   }

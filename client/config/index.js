@@ -1,3 +1,4 @@
+const { resolve } = require('path')
 const config = {
   projectName: 'shopping',
   date: '2021-6-22',
@@ -28,6 +29,7 @@ const config = {
   },
   framework: 'react',
   mini: {
+    esnextModules: ['taro-ui'],
     postcss: {
       pxtransform: {
         enable: true,
@@ -50,6 +52,7 @@ const config = {
     }
   },
   h5: {
+    esnextModules: ['taro-ui'],
     publicPath: '/',
     staticDirectory: 'static',
     postcss: {
@@ -69,7 +72,7 @@ const config = {
   }
 }
 
-module.exports = function (merge) {
+module.exports = function(merge) {
   if (process.env.NODE_ENV === 'development') {
     return merge({}, config, require('./dev'))
   }

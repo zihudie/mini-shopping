@@ -29,6 +29,17 @@
     "dev:jd": "npm run build:jd -- --watch",
     "dev:quickapp": "npm run build:quickapp -- --watch"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ]
+  },
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -39,9 +50,11 @@
     "@tarojs/runtime": "3.0.14",
     "@tarojs/taro": "3.0.14",
     "cross-env": "^7.0.3",
-    "lodash": "4.17.15",
+    "husky": "^7.0.1",
+    "lint-staged": "^11.0.0",
     "react": "^16.10.0",
-    "react-dom": "^16.10.0"
+    "react-dom": "^16.10.0",
+    "taro-ui": "^3.0.0-alpha.3"
   },
   "devDependencies": {
     "@babel/core": "^7.8.0",
