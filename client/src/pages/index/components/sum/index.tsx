@@ -6,7 +6,7 @@ import './index.scss'
 export const SumPage: React.FC = ( ) => {
    const  [sum,setSum] = useState<any>([])
 
-   const  test = 'dde'
+   const  test = 'dde';
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
   //     name:'sum'
