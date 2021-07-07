@@ -12,6 +12,12 @@ https://github.com/lentoo/52pojie-apps/blob/master/client/src/pages/index/index.
 https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 
 
+## ui  
+- taro ui
+- 页面公用css  flex
+- 公共方法 
+- 
+
 # 小程序端（client）
 
 # 云端（cloud）
@@ -27,11 +33,11 @@ https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 
   注意，这里的创建者指的不是管理者，也不是开发者（或者你本人），而是用户里的一个角色
 
-- 什么时候放在小程序端获取，什么时候放在云函数端获取
+- 什么时候放在小程序端获取，什么时候放在云函数端获取  【云函数端速度最快】
 
 - 文档型数据库，
 
-文档记录 ，集合？
+ 
 
 
 

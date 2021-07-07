@@ -28,7 +28,6 @@ exports.main = async (event, context) => {
   // .limit(10)
   .get()
   console.log(result)
-  
-  return result.data
+  return result
 
 }
