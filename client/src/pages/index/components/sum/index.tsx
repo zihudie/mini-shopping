@@ -1,6 +1,5 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
 import React ,{useState, useEffect}from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { setBackgroundFetchToken } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import './index.scss'
 export const SumPage: React.FC = ( ) => {
@@ -8,6 +7,13 @@ export const SumPage: React.FC = ( ) => {
 
    const  test = 'dde';
          const  test2 ="hello";
+
+
+     ssfdf
+
+     setBackgroundFetchTokensd
+     fsdfsdf
+     <dfn>d</dfn>
    
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
