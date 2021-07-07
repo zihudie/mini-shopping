@@ -35,10 +35,9 @@
     }
   },
   "lint-staged": {
-    "src/**/*.{ts,tsx}": [
+    "client/src/**/*.{ts,tsx}": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "author": "",
