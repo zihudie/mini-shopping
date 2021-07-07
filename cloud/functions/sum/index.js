@@ -1,6 +1,10 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-cloud.init()
+// 初始化 cloud
+cloud.init({
+  // 该配置能保证当前的环境同小程序客户端的环境一致，动态切换到相应的环境
+  env: cloud.DYNAMIC_CURRENT_ENV
+})
 const db  = cloud.database()
 const _ = db.command
 // 云函数入口函数

@@ -1,12 +1,10 @@
 import React ,{useState, useEffect}from 'react'
-import Taro, { setBackgroundFetchToken } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import './index.scss'
 export const SumPage: React.FC = ( ) => {
-   const  [sum,setSum] = useState<any>([])
+   const  [sum,setSum] = useState<any>([])  
 
-  const w33 = "ddd"
-  
    
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
@@ -16,6 +14,8 @@ export const SumPage: React.FC = ( ) => {
   //     setSum(JSON.stringify(res.result || {}))
   //   })
   //  },[])
+
+
 
   //  const db = Taro.cloud.database() //申明一个变量，简化后面的写法
   //  db.collection('zhihu_daily')
@@ -33,6 +33,10 @@ export const SumPage: React.FC = ( ) => {
     }).then(res=>{
       setSum( (res.result as {data:any[]}).data)
     })
+
+   Taro.cloud.callFunction({
+     name:'sum'
+   })
   }
   return (
       <View className='line-first'>

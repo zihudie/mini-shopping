@@ -20,6 +20,7 @@
     "build:quickapp": "taro build --type quickapp",
     "dev:weapp": "npm run build:weapp -- --watch",
     "dev:pre": "cross-env NODE_ENV=production npm run build:weapp -- --watch",
+    "test:weapp": "cross-env NODE_ENV=test npm run build:weapp -- --watch",
     "dev:swan": "npm run build:swan -- --watch",
     "dev:alipay": "npm run build:alipay -- --watch",
     "dev:tt": "npm run build:tt -- --watch",
@@ -35,7 +36,7 @@
     }
   },
   "lint-staged": {
-    "**/src/**/*.{ts,tsx}": [
+    "*.{ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ]

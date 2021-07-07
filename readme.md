@@ -16,7 +16,12 @@
 https://github.com/lentoo/52pojie-apps/blob/master/client/src/pages/index/index.tsx
 https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 
+<!-- 可学习
+ https://github.com/hi-our/hi-face/blob/master/taro/src/app.js  -->
 
+<!--  鉴权 https://juejin.cn/post/6844904032138428424 -->
+<!-- tabbar  -->
+<!-- https://cloud.tencent.com/developer/article/1738699 -->
 ## ui  
 - taro ui
 - 页面公用css  flex
