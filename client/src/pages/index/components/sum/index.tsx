@@ -9,6 +9,7 @@ export const SumPage: React.FC = ( ) => {
    const  test = 'dde';
          const  test2 ="hello";
          sfsdfsdfsdf
+         sdfsdf
    
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
