@@ -1,5 +1,9 @@
 module.exports = {
-  "extends": ["taro", "plugin:@typescript-eslint/recommended"],
+  "extends": ["taro", 
+  "plugin:@typescript-eslint/recommended",
+  'standard',
+  'taro/react',
+  'prettier',],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "no-unused-vars": ["error", { "varsIgnorePattern": "Taro" }],

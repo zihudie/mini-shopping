@@ -5,15 +5,8 @@ import './index.scss'
 export const SumPage: React.FC = ( ) => {
    const  [sum,setSum] = useState<any>([])
 
-   const  test = 'dde';
-         const  test2 ="hello";
-
-
-     ssfdf
-
-     setBackgroundFetchTokensd
-     fsdfsdf
-     <dfn>d</dfn>
+  const w33 = "ddd"
+  
    
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
