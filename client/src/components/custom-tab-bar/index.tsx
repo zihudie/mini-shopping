@@ -1,36 +1,38 @@
 import Taro from '@tarojs/taro';
 import React, { Component } from 'react'
 import { CoverView, CoverImage } from '@tarojs/components';
-import './index.scss';
-
+import './index.scss'
+import homeIco from 'assets/home.png'
+import homeActiveIco from 'assets/home_active.png'
+import shoppingIco from 'assets/shoppingbag.png'
+import shoppingActiveIco from 'assets/shoppingbag_active.png'
+import mineIco from 'assets/mine.png'
+import mineActiveIco from 'assets/mine_active.png'
 const list = [
   {
     pagePath: '/pages/index/index',
     text: '首页',
-    iconPath: 'assets/home.png',
-    selectedIconPath: 'assets/home_active.png'
+    iconPath: homeIco,
+    selectedIconPath: homeActiveIco
   },
   {
     pagePath: '/pages/cart/index',
     text: '购物车',
-    iconPath: 'assets/shoppingbag.png',
-    selectedIconPath: 'assets/shoppingbag_active.png'
+    iconPath: shoppingIco,
+    selectedIconPath: shoppingActiveIco
   },
   {
     pagePath: '/pages/mine/index',
     text: '我的',
-    iconPath: 'assets/mine.png',
-    selectedIconPath: 'assets/mine_active.png'
+    iconPath: mineIco ,
+    selectedIconPath: mineActiveIco
   }
 
 ];
 
 class CustomTabBar extends Component<{selected:number}> {
   state = {
-    // 建立一个全局变量储存selectedIndex
-    // 创建方法可以按照自己的方法或taro提供的示例
-    // 当然没有这个全局变量也可以解决问题
-    selected: -1 //global.globalData.selectedIndex,
+    selected: -1  
   };
 
   switchTab = (item, index) => {
@@ -53,7 +55,7 @@ class CustomTabBar extends Component<{selected:number}> {
           const isSelected = selected === index;
           return (
             <CoverView
-              className="tabBarItem"
+              className={`tabBarItem ${isSelected ? 'actived' :''} `}
               onClick={() => this.switchTab(item, index)}
               data-path={item.pagePath}
               key={item.text}

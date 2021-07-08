@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   height: 96px;
-  background: white;
+  background: #000;
   display: flex;
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -20,12 +20,14 @@
 }
 
 .tabBarItem {
+  color: rgb(136, 119, 119);
   flex: 1;
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  
 }
 
 .tabBarItem cover-image {
@@ -35,4 +37,9 @@
 
 .tabBarItem cover-view {
   font-size: 24px;
+  color: #999 !important;
+}
+
+.actived cover-view{
+  color: #715a22 !important;
 }

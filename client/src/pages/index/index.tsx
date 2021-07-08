@@ -27,9 +27,9 @@ export default class Index extends Component {
   render () {
     return (
       <View className='index'>
-        <Login/>
-        <SumPage/>
+        {/* <Login/> */}
         <GuidePage/>
+        <SumPage/>
         <CustomTabBar selected={this.tabBarIndex} />
       </View>
     )

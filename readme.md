@@ -26,7 +26,21 @@ https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 - taro ui
 - 页面公用css  flex
 - 公共方法 
-- 
+
+
+登录态需要做
+
+
+如果用户没有登录 ，弹出需要登录，  点击我的  需要登录页面
+
+小程序识别是用哪种toke
+
+- 获取路由参数  
+
+- 登录页面， 填写code 
+小程序路由携带参数 ， 默认注入参数
+
+
 
 # 小程序端（client）
 

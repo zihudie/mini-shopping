@@ -1,28 +1,27 @@
-const  delay = (ms) =>{
-  return new Promise(resolve=> setTimeout(resolve,ms))
-}
- 
-export function callCloudFunction(param: Pick<Taro.cloud.CallFunctionParam, 'name' | 'data' | 'slow' | 'config'>) : Promise<Taro.cloud.CallFunctionResult> {
-  let retryCount = 0
-  if (!param.config) {
-    // 获取对应环境的id
-    param.config = {
-      env: 'env-52pojie-2tc3i',
-      traceUser: true
-    }
-  }
-  async function callFunction() {
-    return Taro.cloud.callFunction(param)
-      .catch(async error => {
-        console.log(error);
-        retryCount++
-        if (retryCount <= 10) {
-          await delay(500)
-          return callFunction()
+import Taro from '@tarojs/taro'
+export function callCloudFunction(param: Pick<Taro.cloud.CallFunctionParam, 'name' | 'data' | 'slow' | 'config'>): Promise<Taro.cloud.CallFunctionResult> {
+  return new Promise((resolve, reject) => {
+    Taro.cloud.callFunction({
+      ...param
+    }).then(callRes => {
+      const { errMsg = '', result } = callRes
+      if (result && (errMsg.includes('ok'))) {
+        let apiResult = result as { status: number, data: any, message: string }
+        if (apiResult.status === 0) {
+          resolve(apiResult.data || {})
         } else {
-          Promise.reject(error)
+          // 添加报错信息
+          Taro.showToast({
+           title: apiResult.message,
+           duration: 1000
+         })
+          reject(apiResult)
         }
-      })    
-  }
-  return callFunction()
+      } else {
+        reject(result)
+      }
+    }).catch(error => {
+      reject(error)
+    })
+  })
 }

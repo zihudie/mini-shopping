@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
-import ENV_ID from 'helper/env'
+// import ENV_ID from 'helper/env'
 import './app.scss'
 
 
@@ -8,10 +8,9 @@ class App extends Component {
  
   componentDidMount() {
     // 云开发初始化
-    console.log(ENV_ID)
     Taro.cloud.init(
       {
-        env: ENV_ID,
+        env: process.env.ENV_ID,
         traceUser: true
       }
     )
