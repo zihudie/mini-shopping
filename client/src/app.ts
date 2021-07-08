@@ -20,8 +20,8 @@ class App extends Component {
     //     console.log(res)
     //   }
     // }) 
-    const db = Taro.cloud.database()
-    const users_db = db.collection('users')
+    // const db = Taro.cloud.database()
+    // const users_db = db.collection('users')
     // 获取用户信息  进行存储
     callCloudFunction({
         name: "shopApis",
