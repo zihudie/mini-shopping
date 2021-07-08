@@ -9,7 +9,7 @@ import {GuidePage} from './components/guide/index'
 export default class Index extends Component {
    tabBarIndex  = 0
   componentWillMount () { 
-    sfdsfl 
+    sfdsf
   }
 
   componentDidMount () { 
