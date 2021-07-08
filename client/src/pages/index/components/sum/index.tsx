@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
-import { callCloudFunction } from 'helper/index'
+import { callCloudFunction } from '@/helper/fetch'
 import './index.scss'
 export const SumPage: React.FC = () => {
   const [sum, setSum] = useState<any>([])
-
-
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
   //     name:'sum'
@@ -15,8 +13,6 @@ export const SumPage: React.FC = () => {
   //     setSum(JSON.stringify(res.result || {}))
   //   })
   //  },[])
-
-
 
   //  const db = Taro.cloud.database() //申明一个变量，简化后面的写法
   //  db.collection('zhihu_daily')
@@ -27,8 +23,11 @@ export const SumPage: React.FC = () => {
   //   .catch(err => {
   //     console.error(err)
   //   })
+  //  Taro.setStorageSync("userinfo", event.detail.userInfo);
+
 
   const getData = async () => {
+    
     callCloudFunction(
       {
         name: 'shopApis',
@@ -41,8 +40,7 @@ export const SumPage: React.FC = () => {
   }
   return (
     <View className='line-first'>
-      <Button size='mini' type='primary' onClick={getData} >重新获取</Button>
-      <View>{sum.length} </View>  
+      <Button size='mini' type='primary' onClick={getData} > 云函数调用</Button>
       <View >
         {
           sum.map(item => (

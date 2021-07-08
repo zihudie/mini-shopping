@@ -8,7 +8,7 @@ import './index.scss'
     constructor(props) {
       super(props)
       this.state = {
-        tabBarIndex: -1
+        tabBarIndex: 2
       }
     }
     componentDidShow():void {

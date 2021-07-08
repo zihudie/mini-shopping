@@ -40,7 +40,8 @@ https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 - 登录页面， 填写code 
 小程序路由携带参数 ， 默认注入参数
 
-
+- 如何部署工程
+- 
 
 # 小程序端（client）
 
