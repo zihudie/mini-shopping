@@ -8,20 +8,6 @@ import {GuidePage} from './components/guide/index'
  
 export default class Index extends Component {
    tabBarIndex  = 0
-  componentWillMount () { 
-  }
-
-  componentDidMount () { 
-
-  }
-
-  componentWillUnmount () { }
-
-  componentDidShow () {
-  }
-
-  componentDidHide () { }
-
   render () {
     return (
       <View className='index'>

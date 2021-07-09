@@ -1,18 +1,15 @@
 
 - husky
-- linaria/react
 - 校验规则
 - husky
 - 统一封装的调用云函数的方法 
-
-- 获取路由参数
 - 环境配置
-
 - token 本地存储
 
 
-- 泛型  
 
+
+- ts泛型  
 https://github.com/lentoo/52pojie-apps/blob/master/client/src/pages/index/index.tsx
 https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 
@@ -44,6 +41,8 @@ https://github.com/jinjinjin0731/eshop/blob/master/cloud/functions/shop/index.js
 - 
 
 # 小程序端（client）
+
+
 
 # 云端（cloud）
 
