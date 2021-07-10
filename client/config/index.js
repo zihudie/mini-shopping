@@ -1,3 +1,7 @@
+const path = require('path');
+function resolve(dir) {
+  return path.join(__dirname, dir)
+}
 const config = {
   projectName: 'shopping',
   date: '2021-6-22',
