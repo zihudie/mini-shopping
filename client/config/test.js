@@ -1,6 +1,6 @@
 module.exports = {
   env: {
-    NODE_ENV: '"production"',
+    NODE_ENV: '"test"',
     ENV_ID: '"cloud1-0gi5xo4g3cda5ab0"'
   },
   defineConstants: {

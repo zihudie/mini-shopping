@@ -3,7 +3,6 @@
   "cloudfunctionRoot": "cloud/functions/",
   "projectname": "shopping",
   "description": "watch shopping",
-  "appid": "wxf7545336c32a7cf4",
   "setting": {
     "urlCheck": true,
     "scopeDataCheck": false,
@@ -31,5 +30,6 @@
   },
   "compileType": "miniprogram",
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+  "appid": "wxf7545336c32a7cf4",
   "condition": {}
 }

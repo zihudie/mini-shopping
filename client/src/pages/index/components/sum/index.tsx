@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-inferrable-types */
-import React ,{useState, useEffect}from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
+import { callCloudFunction } from '@/helper/fetch'
 import './index.scss'
-export const SumPage: React.FC = ( ) => {
-   const  [sum,setSum] = useState<any>([])
+export const SumPage: React.FC = () => {
+  const [sum, setSum] = useState<any>([])
   //  useEffect(()=>{
   //   Taro.cloud.callFunction({
   //     name:'sum'
@@ -23,31 +23,35 @@ export const SumPage: React.FC = ( ) => {
   //   .catch(err => {
   //     console.error(err)
   //   })
-  const getData = async ()=>{
-    Taro.cloud.callFunction({
-      name:'sum'
-    }).then(res=>{
-      setSum( res.result  )
-      // console.log(typeof res.result)
-    })
+  //  Taro.setStorageSync("userinfo", event.detail.userInfo);
+
+
+  const getData = async () => {
+    
+    callCloudFunction(
+      {
+        name: 'shopApis',
+        data: {
+          $url: "sum/getData"
+        }
+      }).then(res => {
+        setSum(res)
+      })
   }
   return (
-      <View className='line-first'>
-         <Button size='mini' type='primary' onClick={getData}>重新获取</Button>
-        {/* <View>{sum} </View>   */}
-        <View >
-          {
-            sum.map(item=> (
-              <View className='area' key={item.city}>
+    <View className='line-first'>
+      <Button size='mini' type='primary' onClick={getData} > 云函数调用</Button>
+      <View >
+        {
+          sum.map(item => (
+            <View className='area' key={item.city}>
               <View className='province'>{item.province}</View>
               <View className='city'>{item.city}</View>
               <View className='gdp'>{item.gdp}</View>
-              </View>
-              ))
-          }
-        </View>
+            </View>
+          ))
+        }
       </View>
+    </View>
   )
 }
-
-// SumPage.defaultProps = new SumPageProps()
