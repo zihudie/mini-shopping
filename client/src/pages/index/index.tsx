@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
-import Taro, { Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import './index.scss'
+import { Component } from 'react'
+import { View } from '@tarojs/components'
 import CustomTabBar from 'components/custom-tab-bar'
-import {SumPage} from './components/sum/index'
-import {GuidePage} from './components/guide/index'
- 
+import { SumPage } from './components/sum/index'
+import { GuidePage } from './components/guide/index'
+import './index.scss'
+
 export default class Index extends Component {
-   tabBarIndex  = 0
-  render () {
+  tabBarIndex = 0
+  render() {
     return (
       <View className='index'>
         {/* <Login/> */}
-        <GuidePage/>
-        <SumPage/>
+        <GuidePage />
+        <SumPage />
         <CustomTabBar selected={this.tabBarIndex} />
       </View>
     )
