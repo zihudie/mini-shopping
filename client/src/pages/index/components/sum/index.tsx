@@ -39,7 +39,6 @@ export const SumPage: React.FC = () => {
   return (
     <View className='line-first'>
       <Button size='mini' type='primary' onClick={getData}>
-        {' '}
         云函数调用
       </Button>
       <View>
