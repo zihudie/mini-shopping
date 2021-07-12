@@ -20,7 +20,7 @@ exports.main = (event,context) => {
     ctx.body = await api.login.login(event)
   })
   app.router('sum/getData', async (ctx) => {
-    ctx.body = await api.sum.getData(event)
+    ctx.body = await api.sumlint-staged.getData(event)
   })
   return app.serve()
 }

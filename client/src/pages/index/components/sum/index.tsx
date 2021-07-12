@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { callCloudFunction } from '@/helper/fetch'
 import './index.scss'
+
 export const SumPage: React.FC = () => {
   const [sum, setSum] = useState<any>([])
   //  useEffect(()=>{
@@ -25,32 +26,30 @@ export const SumPage: React.FC = () => {
   //   })
   //  Taro.setStorageSync("userinfo", event.detail.userInfo);
 
-
   const getData = async () => {
-    
-    callCloudFunction(
-      {
-        name: 'shopApis',
-        data: {
-          $url: "sum/getData"
-        }
-      }).then(res => {
-        setSum(res)
-      })
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'sum/getData',
+      },
+    }).then((res) => {
+      setSum(res)
+    })
   }
   return (
     <View className='line-first'>
-      <Button size='mini' type='primary' onClick={getData} > 云函数调用</Button>
-      <View >
-        {
-          sum.map(item => (
-            <View className='area' key={item.city}>
-              <View className='province'>{item.province}</View>
-              <View className='city'>{item.city}</View>
-              <View className='gdp'>{item.gdp}</View>
-            </View>
-          ))
-        }
+      <Button size='mini' type='primary' onClick={getData}>
+        {' '}
+        云函数调用
+      </Button>
+      <View>
+        {sum.map((item) => (
+          <View className='area' key={item.city}>
+            <View className='province'>{item.province}</View>
+            <View className='city'>{item.city}</View>
+            <View className='gdp'>{item.gdp}</View>
+          </View>
+        ))}
       </View>
     </View>
   )
