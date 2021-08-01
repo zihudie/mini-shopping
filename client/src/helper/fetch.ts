@@ -4,7 +4,10 @@ export interface resultInterface<T = any> {
   data: T,
   message: string
 }
+
+
 export function callCloudFunction(param: Pick<Taro.cloud.CallFunctionParam, 'name' | 'data' | 'slow' | 'config'>): Promise<Taro.cloud.CallFunctionResult> {
+  // todo      
   return new Promise((resolve, reject) => {
     Taro.cloud.callFunction({
       ...param
@@ -12,7 +15,6 @@ export function callCloudFunction(param: Pick<Taro.cloud.CallFunctionParam, 'nam
       const { errMsg = '', result } = callRes
       if (result && (errMsg.includes('ok'))) {
         let apiResult = result as resultInterface
-
         if (apiResult.status === 0) {
           resolve(apiResult.data || {})
         } else {

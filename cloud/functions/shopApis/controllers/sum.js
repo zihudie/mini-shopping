@@ -16,7 +16,7 @@ class SumController extends BaseController{
       // .skip(0)
       // .limit(10)
       .get()
-      return this.success(result.data) 
+      return this.success(result.data)
     }catch (err){
       return this.fail(-10010,'failed...',err) 
     }

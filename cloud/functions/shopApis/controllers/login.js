@@ -10,6 +10,7 @@ class LoginController extends BaseController{
       env: wxContext.ENV
     })
   }
+  
 }
 
 module.exports = LoginController
