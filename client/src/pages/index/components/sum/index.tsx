@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { callCloudFunction } from '@/helper/fetch'
 import './index.scss'

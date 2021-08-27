@@ -1,4 +1,4 @@
 export default {
-  navigationBarTitleText: '首页',
+  navigationBarTitleText: '商品分类',
   usingComponents: {},
 }

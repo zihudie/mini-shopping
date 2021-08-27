@@ -1,10 +1,11 @@
-const cloud = require('wx-server-sdk')
-cloud.init({
-  env: cloud.DYNAMIC_CURRENT_ENV
+import cloud, { init, DYNAMIC_CURRENT_ENV, database } from 'wx-server-sdk'
+
+init({
+  env: DYNAMIC_CURRENT_ENV
 })
-let tcb = cloud
-tcb.db = cloud.database()
+const tcb = cloud
+tcb.db = database()
 tcb._ = tcb.db.command
 tcb.$ = tcb._.aggregate
-module.exports = tcb
+export default tcb
  
