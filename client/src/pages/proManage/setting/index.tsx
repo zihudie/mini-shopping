@@ -32,7 +32,7 @@ const ProSettingPage: React.FC = () => {
       {
         sku: '',
         price: '',
-        img: '',
+        img: [{ url: '' }],
       },
     ],
   })
@@ -56,10 +56,6 @@ const ProSettingPage: React.FC = () => {
     const tempPro = proform.productLists
     tempPro[index][type] = val
     setForm({ ...proform, productLists: tempPro })
-
-    setTimeout(() => {
-      console.log(proform)
-    }, 1000)
   }
 
   // select  商品种类
@@ -73,15 +69,29 @@ const ProSettingPage: React.FC = () => {
     tempPro.push({
       sku: '',
       price: '',
-      img: '',
+      img: [{ url: '' }],
     })
     setForm({ ...proform, productLists: tempPro })
+  }
+
+  // fileChange
+  const fileChange = (files: any, index: number) => {
+    console.log(files)
+    const tempPro = proform.productLists
+    tempPro[index].img = [{ url: files[files.length - 1].url }]
+    console.log(tempPro)
+
+    setForm({ ...proform, productLists: tempPro })
+  }
+  const fileFail = (mes: string, index: number) => {
+    console.log(mes)
   }
   // form 提交
   const onSubmit = (event) => {
     console.log(proform)
     // console.log(event)
   }
+
   return (
     <View className='promanage'>
       {/* 筛选模块 */}
@@ -124,7 +134,7 @@ const ProSettingPage: React.FC = () => {
           name='salesPrice'
           title='售卖价格'
           type='number'
-          placeholder='请输入商品原价'
+          placeholder='请输入售卖价格'
           value={proform.salesPrice}
           onChange={(val) => handleChange('salesPrice', val)}
         />
@@ -157,7 +167,7 @@ const ProSettingPage: React.FC = () => {
         {/* 添加多规格  颜色*/}
 
         <View className='add_sku-lists'>
-          <AtButton type='primary' onClick={addSku}>
+          <AtButton type='primary' className='sku-add-btn' onClick={addSku}>
             +添加规格
           </AtButton>
           {proform.productLists.map((list, _idx) => {
@@ -165,7 +175,7 @@ const ProSettingPage: React.FC = () => {
               <View className='sku-list' key={_idx}>
                 <AtInput
                   required
-                  name='sku'
+                  name={`sku${_idx}`}
                   title={`型号${_idx + 1}`}
                   type='number'
                   placeholder='请输入型号名称'
@@ -173,15 +183,15 @@ const ProSettingPage: React.FC = () => {
                   onChange={(val) => handleListChange(_idx, 'sku', val)}
                 />
                 <View>
-                  {/* <AtImagePicker
-                  multiple
-                  files={this.state.files}
-                  onChange={this.onChange.bind(this)}
-                  onFail={this.onFail.bind(this)}
-                /> */}
+                  <AtImagePicker
+                    multiple
+                    files={list.img}
+                    onChange={(files) => fileChange(files, _idx)}
+                    onFail={(mes) => fileFail(mes, _idx)}
+                  />
                   <AtInput
                     required
-                    name='inventory'
+                    name={`price${_idx}`}
                     title='价格'
                     type='number'
                     placeholder='请输入价格'
@@ -202,7 +212,7 @@ const ProSettingPage: React.FC = () => {
           onChange={(val) => handleChange('name', val)}
         /> */}
         {/* <View className='search-add'></View> */}
-        <AtButton type='primary' onClick={onSubmit}>
+        <AtButton type='primary' className='pro-submit' onClick={onSubmit}>
           提交
         </AtButton>
         {/* <AtButton formType='submit' type='primary' >提交</AtButton> */}

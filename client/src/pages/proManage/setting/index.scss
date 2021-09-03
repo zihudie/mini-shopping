@@ -34,7 +34,22 @@ page{
   padding: 0 18px;
 }
 
-.add_sku-lists{
-  
+.sku-add-btn{
+  width: 200px;
 }
- 
+.sku-list{
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  margin:5px 0;
+  border:1px solid #ebeef5;
+}
+.add_sku-lists{
+  padding-bottom: 50px;
+}
+
+.pro-submit{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+}
