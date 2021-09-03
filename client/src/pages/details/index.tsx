@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { Swiper, SwiperItem, View, Text, Image } from '@tarojs/components'
-import { AtButton, AtFloatLayout } from 'taro-ui'
+import { AtButton, AtFloatLayout, AtInputNumber, AtToast } from 'taro-ui'
 import 'taro-ui/dist/style/components/modal.scss'
 import pricePic from 'assets/details/priceMsg.png'
 import 'taro-ui/dist/style/components/float-layout.scss'
 import 'taro-ui/dist/style/components/button.scss'
+import 'taro-ui/dist/style/components/input-number.scss'
+import 'taro-ui/dist/style/components/icon.scss'
+import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
 interface ItemTypes {
@@ -56,7 +59,11 @@ const SwpierContent: React.FC = () => {
   )
 }
 const DetailPage: React.FC = () => {
-  const [isOpened, setopen] = useState(true)
+  const [isOpened, setopen] = useState(false)
+  const [value, setVale] = useState(1)
+  const [toastOpen, setToastOpen] = useState(false)
+  const [confirmType, setConfirmType] = useState('cart')
+
   const details = [
     'https://img10.360buyimg.com/imgzone/jfs/t1/200672/11/2657/297896/611f4ae8E9f271e66/d77faa51598da97b.jpg!q70.dpg.webp',
     'http://img10.360buyimg.com/imgzone/jfs/t1/177954/6/20046/300647/611f4ae8E19a28b88/c8370723167d65cc.jpg!q70.dpg.webp',
@@ -68,6 +75,31 @@ const DetailPage: React.FC = () => {
   const curtainClose = () => {
     console.log(1)
   }
+  console.log('change....')
+  const handleChange = (val) => {
+    setVale(val)
+  }
+
+  const handleConfirm = () => {
+    console.log('hahh', confirmType)
+    if (confirmType === 'cart') {
+      // todo   添加到购物车
+      setToastOpen(true)
+      setopen(false)
+      setTimeout(() => {
+        setToastOpen(false)
+      }, 1000)
+    } else {
+      console.log('hahh', confirmType)
+    }
+  }
+
+  const handleClick = (type: string) => {
+    setConfirmType(type)
+    console.log(type, confirmType === 'buy')
+    setopen(true)
+  }
+
   return (
     <View className='app'>
       {/* swiper */}
@@ -104,10 +136,24 @@ const DetailPage: React.FC = () => {
       </View>
       {/* 底部展示 */}
       <View className='pro-bottom'>
-        <AtButton className='cart' type='primary' circle>
+        <AtButton
+          className='cart'
+          onClick={() => {
+            handleClick('cart')
+          }}
+          type='primary'
+          circle
+        >
           加入购物车
         </AtButton>
-        <AtButton className='buy' type='primary' circle>
+        <AtButton
+          className='buy'
+          onClick={() => {
+            handleClick('buy')
+          }}
+          type='primary'
+          circle
+        >
           立即购买
         </AtButton>
       </View>
@@ -117,23 +163,44 @@ const DetailPage: React.FC = () => {
           <View className='inner'>
             <View className='top'>
               <Image src={details[0]} />
-              <View className=''>
-                <Text>¥1280.00</Text>
+              <View className='prices'>
+                <Text className='cur'>¥1280.00</Text>
+                {/* 需要做判断 选择之后才展示 */}
                 <View>
-                  已选<View>经典小绿表</View>
-                  <Text>1</Text>个
+                  已选<Text>经典小绿表</Text>
+                  <Text className='num'>1</Text>个
                 </View>
               </View>
             </View>
             {/* 商品规格 */}
-            <View>红色，绿色</View>
+            <View className='sku_choose'>
+              <Text className='item active'>LR2136-经典小绿表 </Text>
+              <Text className='item'>LR4122-钢带小绿表 </Text>
+              <Text className='item'>LR2136-经典小绿表 </Text>
+              <Text className='item'>LR2134-玫瑰金色小方表 </Text>
+              <Text className='item'>LR4301-竹节纹钢带 </Text>
+            </View>
             {/* 数量选择 */}
-          </View>
-          <View className='confirm'>
-            <AtButton type='primary'>确认</AtButton>
+            <View className='sku_nums'>
+              <Text>数量：</Text>
+              <AtInputNumber
+                type='number'
+                min={1}
+                max={10}
+                step={1}
+                value={value}
+                onChange={handleChange}
+              />
+            </View>
           </View>
         </View>
+        <View className='confirm'>
+          <AtButton type='primary' onClick={handleConfirm}>
+            确认
+          </AtButton>
+        </View>
       </AtFloatLayout>
+      <AtToast isOpened={toastOpen} text='成功加入购物车' duration={1000}></AtToast>
     </View>
   )
 }

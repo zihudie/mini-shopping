@@ -1,0 +1,40 @@
+page{
+  background: #fff;
+  font-size: 28px;
+}
+
+.switch-model{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.at-switch__title{
+  padding-right: 10px;
+}
+
+.at-input__input, 
+.at-input__title ,
+.at-input__input,
+.at-input__title,
+.at-list__item .item-content__info-title{
+  font-size: 28px;
+}
+
+.at-input,
+.at-switch{
+  padding: 18px 0;
+}
+
+.at-list__item{
+  padding:18px 32px;
+}
+
+.form-item{
+  padding: 0 18px;
+}
+
+.add_sku-lists{
+  
+}
+ 

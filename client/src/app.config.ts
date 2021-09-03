@@ -1,10 +1,12 @@
 export default {
   pages: [
+    'pages/proManage/setting/index',
+    'pages/proManage/index',
+    'pages/mine/index',
     'pages/details/index',
     'pages/category/index',
     'pages/index/index',
     'pages/cart/index',
-    'pages/mine/index',
   ],
   window: {
     backgroundTextStyle: 'light',

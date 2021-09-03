@@ -1,0 +1,21 @@
+.top-model {
+  display: flex;
+  align-items: center;
+  .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    background: #efefef;
+  }
+}
+
+.order-model {
+  background: #fff;
+  border-radius: 10px;
+  padding: 30px;
+
+.order-title {
+  display: flex;
+  align-items: center;
+  }
+}
