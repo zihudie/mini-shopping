@@ -4,8 +4,6 @@ export interface resultInterface<T = any> {
   data: T,
   message: string
 }
-
-
 export function callCloudFunction(param: Pick<Taro.cloud.CallFunctionParam, 'name' | 'data' | 'slow' | 'config'>): Promise<Taro.cloud.CallFunctionResult> {
   // todo      
   return new Promise((resolve, reject) => {
