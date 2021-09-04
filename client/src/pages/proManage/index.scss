@@ -1,0 +1,21 @@
+page{
+  background: #fff;
+}
+
+// 商品列表
+.product-lists{
+  padding:20px   10px
+}
+.product-list{
+  display: flex;
+  flex-wrap: wrap;
+  border-bottom:1px solid #eae9e9;
+  &:last-child{
+    border-bottom: none;
+  }
+  padding: 10px 0;
+  .item{
+    width: 50%;
+    padding: 10px 0;
+  }
+}

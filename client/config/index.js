@@ -1,4 +1,6 @@
-const { resolve } = require('path')
+// const { resolve } = require('path')
+import {resolve} from 'path'
+
 const config = {
   projectName: 'shopping',
   date: '2021-6-22',

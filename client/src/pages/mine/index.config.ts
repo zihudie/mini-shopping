@@ -1,4 +1,4 @@
 export default {
-  navigationBarTitleText: '我的',
-  usingComponents:{},
+  navigationBarTitleText: '个人中心',
+  usingComponents: {},
 }

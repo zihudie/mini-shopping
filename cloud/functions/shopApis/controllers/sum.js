@@ -1,6 +1,7 @@
-const BaseController = require('./baseController.js')
+import BaseController from './baseController.js'
+
 class SumController extends BaseController{
-  async getData(event) {
+  async getData() {
     try {
       const result = await this.cloud.db.collection("china")
       .where({
@@ -25,4 +26,4 @@ class SumController extends BaseController{
 }
 
 
-module.exports = SumController
+export default SumController
