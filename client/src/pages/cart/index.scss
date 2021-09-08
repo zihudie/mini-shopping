@@ -1,0 +1,48 @@
+.cart-list{
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 20px;
+
+  .pics{
+    margin-right: 16px;
+  }
+
+  .check{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #666;
+  }
+
+  .name{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    word-spacing:break-all;
+  }
+  
+  .price_line{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price{
+    
+  }
+
+
+  
+
+}
+
+.active{
+  .check{
+    background:#f2270c;
+  }
+}
+
+

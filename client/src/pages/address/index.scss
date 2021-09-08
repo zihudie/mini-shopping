@@ -1,0 +1,55 @@
+.address-model{
+  
+}
+
+.adress-item{
+  display: flex;
+  align-items: center;
+  padding: 20px 10px;
+  background: #fff;
+  
+  .name-tel{
+    color: #333;
+    font-size:28px;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+
+  .details{
+    color: #666;
+    font-size: 26px;
+  }
+
+  .m-left{
+    flex:1; 
+  }
+
+  .m-edit{
+    color: #4b9bfb;
+    font-size: 26px;
+    margin-left: 15px;
+  }
+}
+
+.add-address{
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 20px 0;
+  background: #fff;
+
+  .add-btn{
+    display: block;
+    width:80% ;
+    margin:0 auto;
+    height: 76px;
+    line-height:76px;
+    border-radius: 60px;
+    text-align:center;
+    background:#6190e8;
+    color: #fff;
+    font-size: 30px;
+  }
+  
+}

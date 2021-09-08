@@ -1,11 +1,18 @@
 .top-model {
   display: flex;
   align-items: center;
+  padding: 20px;
   .avatar {
     width: 100px;
     height: 100px;
     border-radius: 100%;
-    background: #efefef;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .user-login{
+    padding-left: 20px;;
   }
 }
 
@@ -13,9 +20,45 @@
   background: #fff;
   border-radius: 10px;
   padding: 30px;
+  margin: 0 30px;
 
-.order-title {
-  display: flex;
-  align-items: center;
+ .order-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .order-status{
+    padding: 30px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-top: 10px;
+
+    image{
+      width: 60px;
+      height: 60px;
+      display: block;
+      margin: 0 auto 6px;
+
+    }
+    .item{
+      text-align: center;
+    }
+  }
+
+  .all-order{
+    color:#999;
   }
 }
+
+.address-mode{
+  padding: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-radius: 10px;
+  margin: 20px 30px;
+}
+

@@ -1,0 +1,61 @@
+.order-list{
+  margin: 15px 10px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,.05);
+  .model-top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .cover{
+    width: 100px;
+    height: 100px;
+    margin-right: 16px;
+
+    image{
+      width: 100%;
+      height: 100%;
+      border-radius: 8px;
+    }
+  }
+
+  .cons{
+    flex:1;
+    .desc{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+  }
+
+  .nums{  
+    padding-left: 16px;
+    color: #999;
+  }
+
+  .model-total{
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .model-btns{
+    display: flex;
+    justify-content: flex-end;
+    border-top: 1px solid #e5e5e5;
+    padding-top: 20px;
+    margin-top: 10px;
+  }
+
+  .buy-btn{
+    display: inline-block;
+    padding: 10px 14px;
+    border:1px solid #6190e8;
+    color: #6190e8;
+    border-radius: 20px;
+  }
+}

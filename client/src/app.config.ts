@@ -1,12 +1,15 @@
 export default {
   pages: [
-    'pages/proManage/setting/index',
-    'pages/proManage/index',
+    'pages/cart/index',
+    'pages/address/details/index',
+    'pages/address/index',
+    'pages/order/index',
     'pages/mine/index',
+    'pages/proManage/index',
+    'pages/proManage/setting/index',
     'pages/details/index',
     'pages/category/index',
     'pages/index/index',
-    'pages/cart/index',
   ],
   window: {
     backgroundTextStyle: 'light',

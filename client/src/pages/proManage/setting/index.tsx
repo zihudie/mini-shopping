@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
+import { callCloudFunction } from '@/helper/fetch'
 import {
   AtInput,
   AtForm,
@@ -7,6 +9,7 @@ import {
   AtList,
   AtListItem,
   AtSwitch,
+  AtToast,
   AtImagePicker,
 } from 'taro-ui'
 import 'taro-ui/dist/style/components/input.scss'
@@ -14,11 +17,13 @@ import 'taro-ui/dist/style/components/icon.scss'
 import 'taro-ui/dist/style/components/list.scss'
 import 'taro-ui/dist/style/components/switch.scss'
 import 'taro-ui/dist/style/components/image-picker.scss'
+import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
 const ProSettingPage: React.FC = () => {
   const selector = ['运动', '休闲', '情侣', '商务']
   const [selected, setSelected] = useState('运动')
+  const [isOpened, setOpened] = useState(false)
   const [proform, setForm] = useState({
     productName: '',
     subTitle: '',
@@ -78,9 +83,11 @@ const ProSettingPage: React.FC = () => {
   const fileChange = (files: any, index: number) => {
     console.log(files)
     const tempPro = proform.productLists
-    tempPro[index].img = [{ url: files[files.length - 1].url }]
-    console.log(tempPro)
-
+    if (files.length) {
+      tempPro[index].img = [{ url: files[files.length - 1].url }]
+    } else {
+      tempPro[index].img = [{ url: '' }]
+    }
     setForm({ ...proform, productLists: tempPro })
   }
   const fileFail = (mes: string, index: number) => {
@@ -89,7 +96,21 @@ const ProSettingPage: React.FC = () => {
   // form 提交
   const onSubmit = (event) => {
     console.log(proform)
-    // console.log(event)
+
+    // 所有检验完成 进行商品的添加
+
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'cms/addData',
+        data: proform,
+      },
+    }).then((res) => {
+      console.log(res)
+      // 提示操作成功，跳转回到
+      setOpened(true)
+      Taro.navigateTo({ url: '/pages/proManage/index' })
+    })
   }
 
   return (
@@ -124,7 +145,7 @@ const ProSettingPage: React.FC = () => {
           required
           name='price'
           title='商品原价'
-          type='number'
+          type='digit'
           placeholder='请输入商品原价'
           value={proform.price}
           onChange={(val) => handleChange('price', val)}
@@ -133,7 +154,7 @@ const ProSettingPage: React.FC = () => {
           required
           name='salesPrice'
           title='售卖价格'
-          type='number'
+          type='digit'
           placeholder='请输入售卖价格'
           value={proform.salesPrice}
           onChange={(val) => handleChange('salesPrice', val)}
@@ -173,50 +194,46 @@ const ProSettingPage: React.FC = () => {
           {proform.productLists.map((list, _idx) => {
             return (
               <View className='sku-list' key={_idx}>
-                <AtInput
-                  required
-                  name={`sku${_idx}`}
-                  title={`型号${_idx + 1}`}
-                  type='number'
-                  placeholder='请输入型号名称'
-                  value={list.sku}
-                  onChange={(val) => handleListChange(_idx, 'sku', val)}
-                />
                 <View>
+                  <Text className='ipt-label'>上传图片</Text>
                   <AtImagePicker
                     multiple
                     files={list.img}
                     onChange={(files) => fileChange(files, _idx)}
                     onFail={(mes) => fileFail(mes, _idx)}
                   />
-                  <AtInput
-                    required
-                    name={`price${_idx}`}
-                    title='价格'
-                    type='number'
-                    placeholder='请输入价格'
-                    value={list.price}
-                    onChange={(val) => handleListChange(_idx, 'price', val)}
-                  />
                 </View>
+                <AtInput
+                  required
+                  name={`sku${_idx}`}
+                  title={`型号${_idx + 1}`}
+                  type='text'
+                  placeholder='请输入型号名称'
+                  value={list.sku}
+                  onChange={(val) => handleListChange(_idx, 'sku', val)}
+                />
+                <AtInput
+                  required
+                  name={`price${_idx}`}
+                  title='价格'
+                  type='digit'
+                  placeholder='请输入价格'
+                  value={list.price}
+                  onChange={(val) => handleListChange(_idx, 'price', val)}
+                />
               </View>
             )
           })}
         </View>
-        {/* <AtInput
-          name='value2'
-          title='商品原价'
-          type='number'
-          placeholder='请输入商品原价'
-          value={proform.name}
-          onChange={(val) => handleChange('name', val)}
-        /> */}
         {/* <View className='search-add'></View> */}
         <AtButton type='primary' className='pro-submit' onClick={onSubmit}>
           提交
         </AtButton>
         {/* <AtButton formType='submit' type='primary' >提交</AtButton> */}
       </AtForm>
+
+      {/* AtToast  新增，编辑商品成功*/}
+      <AtToast isOpened={isOpened} text='操作成功'></AtToast>
     </View>
   )
 }

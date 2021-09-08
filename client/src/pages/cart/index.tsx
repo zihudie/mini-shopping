@@ -1,29 +1,42 @@
-import React, { Component } from 'react'
-import { View } from '@tarojs/components'
-import CustomTabBar from 'components/custom-tab-bar'
+import React, { useState } from 'react'
+import { View, Image, Text } from '@tarojs/components'
+import { AtInputNumber } from 'taro-ui'
+import 'taro-ui/dist/style/components/input-number.scss'
+import 'taro-ui/dist/style/components/icon.scss'
 import './index.scss'
 
-export default class CartPage extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     tabBarIndex: -1
-  //   }
-  // }
-  // componentDidShow():void {
-  //   this.setState({
-  //     tabBarIndex: 1
-  //   })
-  // }
-  tabBarIndex = 1
-  render() {
-    console.log('hhaa')
-
-    return (
-      <View className='guide'>
-        购物车页面
-        {/* <CustomTabBar selected={this.tabBarIndex} /> */}
-      </View>
-    )
+const CartPage: React.FC = () => {
+  const [val, setVal] = useState(1)
+  const handleChange = (values) => {
+    setVal(values)
   }
+
+  return (
+    <View className='cart-model'>
+      <View className='cart-list'>
+        <View className='check'></View>
+        <View className='pics'>{/* <Image src={} /> */}</View>
+        <View className='cons'>
+          <View className='name'>
+            卡西欧(CASIO)男表G-SHOCK小方块金砖银砖六局电波太阳能动力多功能小金块小银块送男
+          </View>
+          <View className='price_line'>
+            <Text className='price'>¥2865</Text>
+            <View className='num_wrap'>
+              <AtInputNumber
+                type='number'
+                min={1}
+                max={50}
+                step={1}
+                value={val}
+                onChange={handleChange}
+              />
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  )
 }
+
+export default CartPage

@@ -1,18 +1,19 @@
-// const TcbRouter =  require("tcb-router")
-import TcbRouter from  'tcb-router'
-import LoginController from './controllers/login'
-import SumController from './controllers/sum'
+/* eslint-disable import/no-commonjs */
+// import TcbRouter from  'tcb-router'
+// import LoginController from './controllers/login'
+// import CmsController from './controllers/cmsApis'
 
+const TcbRouter =  require("tcb-router")
+const CmsController = require('./controllers/cmsApis')
+const LoginController = require('./controllers/login')
 
-// const LoginController = require('./controllers/login')
-// const SumController = require('./controllers/sum')
 
 const api = {
   login: new LoginController(),
-  sum : new SumController()
+  cms : new CmsController()
 }
 
-const main = (event,context) => {
+exports.main = async  (event,context) => {
   console.log(context)
   const app = new TcbRouter({event})
   app.use(async (ctx, next) => {
@@ -24,10 +25,15 @@ const main = (event,context) => {
   app.router('login', async (ctx) => {
     ctx.body = await api.login.login(event)
   })
-  app.router('sum/getData', async (ctx) => {
-    ctx.body = await api.sum.getData(event)
+  // 
+  app.router('cms/getData', async (ctx) => {
+    ctx.body = await api.cms.getData(event)
+  })
+  // 新增商品列表
+  app.router('cms/addData', async (ctx) => {
+    ctx.body = await api.cms.addData(event)
   })
   return app.serve()
 }
 
-export default  main
+// export default  main
