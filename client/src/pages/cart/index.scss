@@ -2,9 +2,16 @@
   background: #fff;
   border-radius: 8px;
   margin-bottom: 20px;
+  padding: 10px;
+ 
+  .m-top{
+    display: flex;
+    align-items: center;
+  }
 
   .pics{
     margin-right: 16px;
+    width: 100px;
   }
 
   .check{
@@ -13,6 +20,8 @@
     border-radius: 50%;
     background: #fff;
     border: 1px solid #666;
+    flex-shrink: 0;
+    margin-right: 16px;
   }
 
   .name{
@@ -23,26 +32,46 @@
     -webkit-box-orient: vertical;
     word-spacing:break-all;
   }
-  
+
   .price_line{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: 20px;
   }
-
-  .price{
-    
-  }
-
-
-  
 
 }
 
-.active{
+.m-active{
   .check{
     background:#f2270c;
+    border-color:#f2270c;
   }
 }
 
+.cart-bottom{
+  padding: 10px;
+  background: #fff;
+  position: fixed;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  z-index: 10;
+
+ .all-cal{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   padding: 0 20px;
+
+ .calculate{
+   padding:20px;
+   border-radius: 30px;
+   color: #fff;
+   background:#f2270c; 
+   text-align:center; 
+   width: 160px;
+ }
+ }
+}
 

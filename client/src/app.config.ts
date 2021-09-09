@@ -1,5 +1,7 @@
 export default {
   pages: [
+    'pages/order/orderDetails/index',
+    'pages/order/orderConfirm/index',
     'pages/cart/index',
     'pages/address/details/index',
     'pages/address/index',
