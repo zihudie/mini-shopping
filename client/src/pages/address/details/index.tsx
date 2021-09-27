@@ -11,28 +11,43 @@ import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
 const AddressDetails: React.FC = () => {
-  const selector = [
-    ['上海', '安徽'],
-    ['上海', '池州', '合肥', '黄山', '安庆'],
-  ]
-  const [selected, setSelected] = useState('运动')
+  const selector = ['上海', '安徽', '北京']
+  const cities = ['浦东新区', '长宁区', '徐汇区']
+  const [selectedProvince, setProvince] = useState('上海')
+  const [selectedCity, setCity] = useState('上海')
   const [isOpened, setOpened] = useState(false)
+  const [validOpen, setValidOpen] = useState(false)
+  const [validMsg, setValidMsg] = useState('')
+  const [userId, setUserId] = useState('')
   const [proform, setForm] = useState({
-    productName: '',
-    subTitle: '',
-    inventory: '',
-    price: '',
-    salesPrice: '',
-    status: true,
-    isRecommond: false,
-    isNew: false,
-    productLists: [
-      {
-        sku: '',
-        price: '',
-        img: [{ url: '' }],
-      },
-    ],
+    _id: '',
+    name: '',
+    tel: '',
+    isDefault: false,
+    addressDetails: '',
+    province: '',
+    city: '',
+  })
+
+  const validateForm = {
+    name: '请输入用户名',
+    tel: '请输入手机号',
+    addressDetails: '请输入详细地址',
+  }
+
+  Taro.getStorage({
+    key: 'openid',
+    success: (res) => {
+      res.data && setUserId(res.data)
+    },
+  })
+
+  // 编辑收货地址
+  Taro.getStorage({
+    key: 'curAddressList',
+    success: (res) => {
+      res.data && setForm(res.data)
+    },
   })
 
   /**
@@ -44,50 +59,63 @@ const AddressDetails: React.FC = () => {
     setForm({ ...proform, [type]: val })
   }
 
-  /**
-   *
-   * @param index
-   * @param type
-   * @param val
-   */
-  const handleListChange = (index: number, type: string, val) => {
-    const tempPro = proform.productLists
-    tempPro[index][type] = val
-    setForm({ ...proform, productLists: tempPro })
+  // 省份选择
+  const selectProvinceOnChange = (e) => {
+    const _index = Number(e.detail.value)
+    setProvince(selector[_index])
   }
 
-  // select  商品种类
-  const selectOnChange = (e) => {
+  // 城市选择
+  const selectCityOnChange = (e) => {
     console.log(e)
-  }
-
-  const addSku = () => {
-    const tempPro = proform.productLists
-    tempPro.push({
-      sku: '',
-      price: '',
-      img: [{ url: '' }],
-    })
-    setForm({ ...proform, productLists: tempPro })
+    const _index = Number(e.detail.value)
+    setCity(cities[_index])
   }
 
   // form 提交
   const onSubmit = (event) => {
-    console.log(proform)
+    debugger
+    console.log('...', proform)
+    for (let i in validateForm) {
+      if (!proform[i]) {
+        setValidOpen(true)
+        setValidMsg(validateForm[i])
+        setTimeout(() => {
+          setValidOpen(false)
+        }, 1000)
+        return
+      }
+    }
+    let url = ''
+    // 添加或者编辑收货地址
 
-    // 所有检验完成 进行商品的添加
+    console.log('proform......', proform)
+    if (proform._id) {
+      url = 'pro/editAddress'
+    } else {
+      url = 'pro/addAddress'
+    }
+    addOrEditAddressFn(url)
+  }
 
+  // 新增地址
+  const addOrEditAddressFn = (url) => {
     callCloudFunction({
       name: 'shopApis',
       data: {
-        $url: 'cms/addData',
-        data: proform,
+        $url: url,
+        data: {
+          ...proform,
+          city: selectedCity,
+          province: selectedProvince,
+          openId: userId,
+        },
       },
     }).then((res) => {
       console.log(res)
       // 提示操作成功，跳转回到
       setOpened(true)
-      Taro.navigateTo({ url: '/pages/proManage/index' })
+      Taro.navigateBack()
     })
   }
 
@@ -97,45 +125,50 @@ const AddressDetails: React.FC = () => {
       <AtForm onSubmit={onSubmit}>
         <AtInput
           required
-          name='productName'
+          name='name'
           title='收货人'
           type='text'
-          maxlength={4}
+          maxlength={50}
           placeholder='姓名'
-          value={proform.productName}
-          onChange={(val) => handleChange('productName', val)}
+          value={proform.name}
+          onChange={(val) => handleChange('name', val)}
         />
         <AtInput
           required
-          name='productName'
+          name='tel'
           title='联系方式'
           type='number'
           maxlength={11}
           placeholder='手机号码'
-          value={proform.productName}
-          onChange={(val) => handleChange('productName', val)}
+          value={proform.tel}
+          onChange={(val) => handleChange('tel', val)}
         />
-        <Picker mode='multiSelector' range={selector} onChange={selectOnChange}>
+        <Picker mode='selector' range={selector} onChange={selectProvinceOnChange}>
           <AtList>
-            <AtListItem title='所在地区' extraText={selected} />
+            <AtListItem title='所在省份' extraText={selectedProvince} />
+          </AtList>
+        </Picker>
+        <Picker mode='selector' range={cities} onChange={selectCityOnChange}>
+          <AtList>
+            <AtListItem title='所在城市' extraText={selectedCity} />
           </AtList>
         </Picker>
         <AtInput
           required
-          name='subTitle'
+          name='addressDetails'
           title='详细地址'
           type='text'
           placeholder='填写详细地址'
-          value={proform.subTitle}
-          onChange={(val) => handleChange('subTitle', val)}
+          value={proform.addressDetails}
+          onChange={(val) => handleChange('addressDetails', val)}
         />
 
         <View className='switch-model'>
           <AtSwitch
             title='设为默认地址'
-            checked={proform.isRecommond}
+            checked={proform.isDefault}
             onChange={(val) => {
-              handleChange('isRecommond', val)
+              handleChange('isDefault', val)
             }}
           />
         </View>
@@ -148,6 +181,7 @@ const AddressDetails: React.FC = () => {
 
       {/* AtToast  新增，编辑商品成功*/}
       <AtToast isOpened={isOpened} text='操作成功'></AtToast>
+      <AtToast isOpened={validOpen} text={validMsg}></AtToast>
     </View>
   )
 }

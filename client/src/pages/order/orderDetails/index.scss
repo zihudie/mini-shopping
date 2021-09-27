@@ -1,6 +1,4 @@
 .orders-confirm__module {
- 
-  
 
   .address-module {
     background: #fff;
@@ -93,14 +91,13 @@
     color:#f2270c ;
   }
 
-  .totla-amount{
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px 0;
-  }
-
 }
 
+.totla-amount{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+}
 .total-pay{
   background: #fff;
   position: fixed;

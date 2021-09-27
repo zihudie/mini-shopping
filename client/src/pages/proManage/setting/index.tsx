@@ -106,7 +106,6 @@ const ProSettingPage: React.FC = () => {
         data: proform,
       },
     }).then((res) => {
-      console.log(res)
       // 提示操作成功，跳转回到
       setOpened(true)
       Taro.navigateTo({ url: '/pages/proManage/index' })

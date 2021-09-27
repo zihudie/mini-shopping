@@ -1,13 +1,12 @@
-.address-model{
-  
-}
+
 
 .adress-item{
   display: flex;
   align-items: center;
   padding: 20px 10px;
   background: #fff;
-  
+  border-bottom:1px solid #eee;
+
   .name-tel{
     color: #333;
     font-size:28px;

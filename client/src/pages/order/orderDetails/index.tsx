@@ -57,7 +57,7 @@ const OrderPage: React.FC = () => {
 
       <View className='order-total'>
         <View className='total-item'>
-          商品总额<Text className='msg'>220230034316</Text>
+          商品总额<Text className='msg'>¥18.98</Text>
         </View>
         <View className='total-item'>
           运费：<Text className='msg'>0.00</Text>

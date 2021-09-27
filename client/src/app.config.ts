@@ -1,5 +1,7 @@
 export default {
   pages: [
+    'pages/index/index',
+    'pages/details/index',
     'pages/order/orderDetails/index',
     'pages/order/orderConfirm/index',
     'pages/cart/index',
@@ -9,9 +11,8 @@ export default {
     'pages/mine/index',
     'pages/proManage/index',
     'pages/proManage/setting/index',
-    'pages/details/index',
     'pages/category/index',
-    'pages/index/index',
+    'pages/login/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -19,6 +20,7 @@ export default {
     navigationBarTitleText: '手表商城',
     navigationBarTextStyle: 'black',
   },
+
   tabBar: {
     // custom: true,
     color: '#7b7b7a',

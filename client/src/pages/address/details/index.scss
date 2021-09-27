@@ -7,6 +7,9 @@ page{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  .at-switch{
+    width: 100%;
+  }
 }
 
 .at-switch__title{
@@ -58,4 +61,5 @@ page{
   left: 0;
   bottom: 0;
   z-index: 10;
+  border-radius: 0 !important;
 }
