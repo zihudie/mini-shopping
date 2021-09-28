@@ -118,7 +118,19 @@ const DetailPage: React.FC = () => {
         }, 1000)
       })
     } else {
+      // 订单确认页面
       console.log('hahh', confirmType)
+
+      // 获取当前选中的规格
+
+      // 存入当前商品的相关信息到本地
+      Taro.setStorage({
+        key: 'orderPros',
+        data: [{ ...proDetails, curSku: curSku, buyNum: nums }],
+      })
+      Taro.navigateTo({
+        url: '/pages/order/orderConfirm/index',
+      })
     }
   }
 

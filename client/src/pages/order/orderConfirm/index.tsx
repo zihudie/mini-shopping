@@ -1,59 +1,178 @@
-import React, { useState } from 'react'
-import { View, Text, Image } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
-import 'taro-ui/dist/style/components/tabs.scss'
-
+import React, { useState, useEffect } from 'react'
+import { View, Text, Image, Button } from '@tarojs/components'
+import { callCloudFunction } from '@/helper/fetch'
+import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
+import Taro from '@tarojs/taro'
+import 'taro-ui/dist/style/components/modal.scss'
 import './index.scss'
 
+interface listType {
+  _id?: string
+  addressDetails: string
+  city: string
+  province: string
+  tel: string
+  name: string
+  isDefault: boolean
+}
+
 const OrderPage: React.FC = () => {
-  const [current, setCurrent] = useState(0)
+  // 获取用户地址信息
+  const [curId, setCurId] = useState('')
+  const [confirmOpen, setConfirmOpen] = useState(false)
+  const [totalAmount, setTotalAmount] = useState(0)
+  const [proDetails, setPorDetails] = useState<any[]>([])
+  const [addressList, setAddressList] = useState<listType>({
+    addressDetails: '',
+    city: '',
+    province: '',
+    tel: '',
+    name: '',
+    isDefault: false,
+  })
 
-  const tabList = [{ title: '全部' }, { title: '已完成' }, { title: '已取消' }]
+  Taro.getStorage({
+    key: 'openid',
+    success: (res) => {
+      console.log('openid...', res.data)
+      setCurId(res.data)
+    },
+  })
 
-  const handleClick = (val) => {
-    setCurrent(val)
-    // todo 发送请求 进行订单的筛选
+  Taro.getStorage({
+    key: 'orderPros',
+    success: (res) => {
+      res.data && setPorDetails(res.data)
+      let total = 0
+      res.data.map((item) => {
+        total += item.buyNum * item.curSku.price
+      })
+      setTotalAmount(total)
+    },
+  })
+
+  useEffect(() => {
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'pro/getAddress',
+        data: { openId: curId },
+      },
+    }).then((result: any) => {
+      // 获取默认的地址
+      console.log('getData.....', result)
+      setAddressList(result[0])
+    })
+  }, [curId])
+
+  const orderPay = () => {
+    // 提示，是否确认支付， 点击确定则为订单完成， 点击取消则订单为取消状态
+    console.log('click')
+    setConfirmOpen(true)
   }
 
-  const item = {
-    productName:
-      '黑人（DARLIE）双重薄荷牙膏225g 清新口气 防蛀固齿 口腔清洁（新旧包装随机发放） ',
-    price: '12.55',
-    num: 5,
-    id: 'sku5998552255',
+  const btnHandle = (type: boolean) => {
+    //
+    const orderType = type ? 1 : 0
+
+    const _orderData: any = []
+
+    proDetails.map((item) => {
+      const { productName, cursku, buyNum, _id } = item
+      _orderData.push({
+        productName,
+        ...cursku,
+        buyNum,
+        productId: _id,
+        addressList: addressList,
+        totalPrice: cursku.num * cursku.price,
+        orderType: orderType,
+      })
+    })
+    // 清楚orderPro 的storage
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'pro/createOrder',
+        data: { openId: curId, ..._orderData },
+      },
+    }).then(() => {
+      Taro.removeStorage({
+        key: 'orderPros',
+      })
+
+      Taro.navigateTo({
+        url: '/pages/mine/index',
+      })
+    })
   }
 
   return (
     <View className='orders-confirm__module'>
       {/* 是否有地址 */}
-      <View className='address-module'>
-        <View className='name-tel'>吴小姐 1382658855</View>
-        <View className='details'>
-          上海浦东新区张江高科技园区浦东新区 申江路5005弄星创科技1号楼5层
-        </View>
-      </View>
-      <View className='pro-lists'>
-        <View className='list'>
-          <Image />
-          <View className='cons'>
-            <View className='name'>
-              明治 新加坡原装进口 儿童零食 小熊草莓夹心饼干蛋糕 休闲食品小零食独立包装50g
-            </View>
-            <View className='price-nums'>
-              <Text className='price'>¥1236</Text>
-              <Text className='nums'>×1</Text>
-            </View>
-            <View className='tips'>支持7天无理由退货</View>
+      {addressList.name ? (
+        <View className='address-module'>
+          <View className='name-tel'>
+            {addressList.name} {addressList.tel}
+          </View>
+          <View className='details'>
+            {addressList.province}
+            {addressList.city}
+            {addressList.addressDetails}
           </View>
         </View>
+      ) : (
+        <View className='address-module'>请添加地址</View>
+      )}
+      {/* 订单信息 */}
+      <View className='pro-lists'>
+        {proDetails.map((list, index) => {
+          return (
+            <View className='list' key={index}>
+              <Image src={list.curSku.url} />
+              <View className='cons'>
+                <View className='name'>{list.productName}</View>
+                <View className='price-nums'>
+                  <Text className='price'>¥ {list.curSku.price}</Text>
+                  <Text className='nums'>×{list.buyNum}</Text>
+                </View>
+                <View className='tips'>支持7天无理由退货</View>
+              </View>
+            </View>
+          )
+        })}
       </View>
       {/* 总计 */}
       <View className='total-pay'>
         <View className='total'>
-          总计： <Text className='price'>¥1110.78</Text>
+          总计： <Text className='price'>¥{totalAmount}</Text>
         </View>
-        <View className='pay-btn'>支付</View>
+        <View className='pay-btn' onClick={orderPay}>
+          支付
+        </View>
       </View>
+      <AtModal isOpened={confirmOpen}>
+        <AtModalContent>确定提交订单吗</AtModalContent>
+        <AtModalAction>
+          {' '}
+          <Button
+            type='default'
+            onClick={() => {
+              btnHandle(false)
+            }}
+          >
+            取消
+          </Button>{' '}
+          <Button
+            type='primary'
+            onClick={() => {
+              btnHandle(true)
+            }}
+          >
+            确定
+          </Button>{' '}
+        </AtModalAction>
+      </AtModal>
     </View>
   )
 }

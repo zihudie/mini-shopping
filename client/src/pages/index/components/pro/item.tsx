@@ -17,16 +17,31 @@ interface propItems {
   [key: string]: any
 }
 const ProductItem: React.FC<propItems> = (props) => {
+  const [userId, setUserId] = useState('')
+
   const [isOpen, setOpen] = useState(false)
   const { id, productName, productCover, salesPrice, inventory } = props.item
+  Taro.getStorage({
+    key: 'openid',
+    success: (res) => {
+      res.data && setUserId(res.data)
+    },
+  })
+
   const addToCart = () => {
     // 将当前商品加入购物车列表中  判断库存是否足够 如果不足则进行库存不足的提示
     if (inventory < 1) {
       setOpen(true)
       return
     }
-    // todo 判断用户登录状态
-    // 加入购物车列表
+    // 判断用户登录状态
+    if (!userId) {
+      Taro.navigateTo({
+        url: '/pages/login/index',
+      })
+    } else {
+      // 加入购物车列表
+    }
   }
 
   const goToDetails = () => {
