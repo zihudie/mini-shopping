@@ -88,7 +88,7 @@ class CmsController extends BaseController{
       return this.fail(-10010,'failed...',err) 
     }
   }
-// 添加地址
+
   async addAddress(event){
     const {data} = event
     try{
@@ -103,7 +103,7 @@ class CmsController extends BaseController{
     }
   }
 
-// 编辑地址
+
   async editAddress(event){
     const {data} = event
     const _id  = data._id
@@ -120,6 +120,7 @@ class CmsController extends BaseController{
       return this.fail(-10010,'failed...',err) 
     }
   }
+
   async getAddress(event){
     const {data} = event
     try{
@@ -136,42 +137,9 @@ class CmsController extends BaseController{
 
 
 
-  // 创建订单
+  
 
-  async createOrder(event){
-    const {data} = event
-    try{
-   
-    data.lists.map(async(list)=>{
-      await this.cloud.db.collection("pro_orders").add({
-        data:{
-          openId:data.openId,
-          ...list
-        }
-      })
-    })
-    return this.success({})
-    }catch(err){
-      return this.fail(-10010,'failed...',err) 
-    }
-  }
-
-  // 获取用户的订单列表
-  async getOrder(event){
-    const {data} = event
-    try{
-      const res =  await this.cloud.db.collection("pro_orders").where({
-        openId: this.cloud._.eq(data.openId),
-      }).get();
-      
-      return this.success(res.data)
-
-    }catch(err){
-
-      return this.fail(-10010,'failed...',err) 
-    }
-  }
-
+ 
 }
 
 module.exports = CmsController

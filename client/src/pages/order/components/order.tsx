@@ -5,28 +5,31 @@ import './order.scss'
 interface ItemProps {
   productName: string
   price: string
-  num: number
+  buyNum: number
   cover: string
   id: string
+  totalPrice: string
+  curSku: any
 }
 const OrderItemPage: React.FC<ItemProps> = (props) => {
-  const { productName, price, num, cover } = props
+  console.log(props)
+  const { productName, totalPrice, buyNum, curSku } = props
 
   return (
     <View className='order-list'>
       <View className='model-top'>
         <View className='cover'>
-          <Image src={cover} />
+          <Image src={curSku.url} />
         </View>
         <View className='cons'>
           <Text className='desc'> {productName} </Text>
         </View>
-        <Text className='nums'> x{num} </Text>
+        <Text className='nums'> x{buyNum} </Text>
       </View>
-      <View className='model-total'>实付¥{price}</View>
-      <View className='model-btns'>
+      <View className='model-total'>实付¥{totalPrice}</View>
+      {/* <View className='model-btns'>
         <Text className='buy-btn'>再次购买</Text>
-      </View>
+      </View> */}
     </View>
   )
 }

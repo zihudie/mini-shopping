@@ -72,7 +72,7 @@ const MinePage: React.FC = () => {
           <View
             className='item'
             onClick={() => {
-              clickJumpTo('/pages/order/index')
+              clickJumpTo('/pages/order/index?current=1')
             }}
           >
             <Image src={icoConfirm} />
@@ -81,7 +81,7 @@ const MinePage: React.FC = () => {
           <View
             className='item'
             onClick={() => {
-              clickJumpTo('/pages/order/index')
+              clickJumpTo('/pages/order/index?current=2')
             }}
           >
             <Image src={icoCancel} />

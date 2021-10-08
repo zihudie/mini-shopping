@@ -63,22 +63,13 @@ exports.main = async  (event,context) => {
   app.router('pro/editAddress', async (ctx) => {
     ctx.body = await api.pro.editAddress(event)
   })
-
+  
   // 获取用户地址列表
   app.router('pro/getAddress', async (ctx) => {
     ctx.body = await api.pro.getAddress(event)
   })
 
   // 创建订单页面 createOrder
-  app.router('pro/createOrder', async (ctx) => {
-    ctx.body = await api.pro.createOrder(event)
-  })
-
-  // 获取用户的订单页面 getOrder
-  app.router('pro/getOrder', async (ctx) => {
-    ctx.body = await api.pro.getOrder(event)
-  })
-
 
 
   return app.serve()

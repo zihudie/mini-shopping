@@ -15,7 +15,7 @@ const OrderPage: React.FC = () => {
 
   const item = {
     productName:
-      '黑人（DARLIE）双重薄荷牙膏225g 清新口气 防蛀固齿 口腔清洁（新旧包装随机发放） ',
+      '黑人（DARLIE）双重薄荷牙膏225g 清新口气 防蛀固齿 口腔清洁（新旧包装随机发放）',
     price: '12.55',
     num: 5,
     id: 'sku5998552255',
@@ -68,9 +68,9 @@ const OrderPage: React.FC = () => {
       </View>
 
       {/* 总计 */}
-      <View className='total-pay'>
+      {/* <View className='total-pay'>
         <View className='pay-btn'>再次购买</View>
-      </View>
+      </View> */}
     </View>
   )
 }

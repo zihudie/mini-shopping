@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { callCloudFunction } from '@/helper/fetch'
-import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
+import { AtModal } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import 'taro-ui/dist/style/components/modal.scss'
 import './index.scss'
@@ -31,27 +31,30 @@ const OrderPage: React.FC = () => {
     isDefault: false,
   })
 
-  Taro.getStorage({
-    key: 'openid',
-    success: (res) => {
-      console.log('openid...', res.data)
-      setCurId(res.data)
-    },
-  })
+  useEffect(() => {
+    Taro.getStorage({
+      key: 'openid',
+      success: (res) => {
+        console.log('openid...111', res.data)
+        setCurId(res.data)
+      },
+    })
 
-  Taro.getStorage({
-    key: 'orderPros',
-    success: (res) => {
-      res.data && setPorDetails(res.data)
-      let total = 0
-      res.data.map((item) => {
-        total += item.buyNum * item.curSku.price
-      })
-      setTotalAmount(total)
-    },
-  })
+    Taro.getStorage({
+      key: 'orderPros',
+      success: (res) => {
+        res.data && setPorDetails(res.data)
+        let total = 0
+        res.data.map((item) => {
+          total += item.buyNum * item.curSku.price
+        })
+        setTotalAmount(total)
+      },
+    })
+  }, [])
 
   useEffect(() => {
+    if (!curId) return
     callCloudFunction({
       name: 'shopApis',
       data: {
@@ -61,7 +64,7 @@ const OrderPage: React.FC = () => {
     }).then((result: any) => {
       // 获取默认的地址
       console.log('getData.....', result)
-      setAddressList(result[0])
+      setAddressList(result[0] || {})
     })
   }, [curId])
 
@@ -72,36 +75,36 @@ const OrderPage: React.FC = () => {
   }
 
   const btnHandle = (type: boolean) => {
-    //
+    console.log('type......', type)
+    // 1 已完成 0 已取消
     const orderType = type ? 1 : 0
-
     const _orderData: any = []
 
     proDetails.map((item) => {
-      const { productName, cursku, buyNum, _id } = item
+      const { productName, curSku, buyNum, _id } = item
       _orderData.push({
         productName,
-        ...cursku,
+        curSku: curSku,
         buyNum,
         productId: _id,
         addressList: addressList,
-        totalPrice: cursku.num * cursku.price,
+        totalPrice: buyNum * curSku.price,
         orderType: orderType,
       })
     })
-    // 清楚orderPro 的storage
+
+    // 清除orderPro 的storage
     callCloudFunction({
       name: 'shopApis',
       data: {
         $url: 'pro/createOrder',
-        data: { openId: curId, ..._orderData },
+        data: { openId: curId, lists: [..._orderData] },
       },
     }).then(() => {
       Taro.removeStorage({
         key: 'orderPros',
       })
-
-      Taro.navigateTo({
+      Taro.switchTab({
         url: '/pages/mine/index',
       })
     })
@@ -151,28 +154,18 @@ const OrderPage: React.FC = () => {
           支付
         </View>
       </View>
-      <AtModal isOpened={confirmOpen}>
-        <AtModalContent>确定提交订单吗</AtModalContent>
-        <AtModalAction>
-          {' '}
-          <Button
-            type='default'
-            onClick={() => {
-              btnHandle(false)
-            }}
-          >
-            取消
-          </Button>{' '}
-          <Button
-            type='primary'
-            onClick={() => {
-              btnHandle(true)
-            }}
-          >
-            确定
-          </Button>{' '}
-        </AtModalAction>
-      </AtModal>
+      <AtModal
+        isOpened={confirmOpen}
+        cancelText='取消'
+        confirmText='确认'
+        onCancel={() => {
+          btnHandle(false)
+        }}
+        onConfirm={() => {
+          btnHandle(true)
+        }}
+        content='确定提交订单吗?'
+      ></AtModal>
     </View>
   )
 }

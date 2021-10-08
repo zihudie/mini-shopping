@@ -121,6 +121,7 @@ const ProManagePage: React.FC = () => {
                   <Text className='label'>商品编号:</Text>
                   <Text>{item.proCode}</Text>
                 </View>
+
                 <View className='item'>
                   <Text className='label'>商品名称:</Text>
                   <Text>{item.productName}</Text>

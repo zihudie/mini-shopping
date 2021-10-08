@@ -64,9 +64,9 @@ const ProductItem: React.FC<propItems> = (props) => {
           <View className='pro-name'>{productName}</View>
           <View className='pro-bottom'>
             <Text>￥{salesPrice}</Text>
-            <AtButton type='secondary' size='small' onClick={addToCart} circle>
+            {/* <AtButton type='secondary' size='small' onClick={addToCart} circle>
               加入购物车
-            </AtButton>
+            </AtButton> */}
           </View>
         </View>
       </View>
@@ -74,5 +74,4 @@ const ProductItem: React.FC<propItems> = (props) => {
     </>
   )
 }
-
 export default ProductItem

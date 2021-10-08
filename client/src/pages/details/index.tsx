@@ -118,6 +118,7 @@ const DetailPage: React.FC = () => {
         }, 1000)
       })
     } else {
+      setopen(false)
       // 订单确认页面
       console.log('hahh', confirmType)
 
