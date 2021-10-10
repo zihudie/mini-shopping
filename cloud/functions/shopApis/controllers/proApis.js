@@ -59,30 +59,32 @@ class CmsController extends BaseController{
   }
 
   // 获取购物车列表
-  async getCartData() {
+  async getCartData(event) {
+    const {data} =  event
     // 根据商品
     try {
-      const result = await this.cloud.db.collection("pro_cart").get()
-      // const result1 =  
+      const result = await this.cloud.db.collection("pro_cart").where({
+        openId: this.cloud._.eq(data.openId)
+      }).get()
       const _result = []
 
-      if(result){
-        (result.data||[]).map( async (item)=>{
+      if(result.data){
+ 
+        for(let item of result.data){
           const details = await this.cloud.db.collection("cms_commodity")
           .where({
             _id:this.cloud._.eq(item.proId)
           })
           .get()
-          const _sku =  ((details.data && details.data.productLists) || []).filter(list=>{
-            list.skuId === result.data.skuId
-          })[0]
-
-          _result.push({...details.data, ..._sku, ...result.data})
-        })
-
+          const _tmpData = details.data[0]
+          const _sku =  ((_tmpData && _tmpData.productLists) || []).filter(list=>list.skuId === item.skuId)[0]
+          _result.push({..._tmpData, curSku:_sku, ...item})
+        }
+        
         return this.success(_result)
+      }else{
+        return this.success({})
       }
-      return this.success({})
 
     }catch (err){
       return this.fail(-10010,'failed...',err) 
@@ -103,6 +105,47 @@ class CmsController extends BaseController{
     }
   }
 
+
+  async updateAddress(event){
+    const {data} = event
+    const _id  = data.addressId
+    delete data._id
+
+    console.log('_id....',_id,data)
+
+    try{
+       // 如果是delete  则删除当前数据
+      if(data.type === "delete"){
+        console.log("delete")
+        await this.cloud.db.collection("addressLists").where({
+          _id: this.cloud._.eq(_id)
+        }).remove()
+
+      }else if(data.type === 'setDefault'){
+         // 如果是设置为默认，则更新当前数据，并将之前设置过的默认选项去除
+        await this.cloud.db.collection("addressLists").where({
+          _id: this.cloud._.exists(true)
+        }).update({
+          data:{
+            isDefault:false
+          }
+        })
+
+        await this.cloud.db.collection("addressLists").where({
+          _id: this.cloud._.eq(_id)
+        }).update({
+          data:{
+            isDefault: true
+          }
+        })
+      }
+      return this.success({})
+    }catch(err){
+      return this.fail(-10010,'failed...',err) 
+    }
+  }
+  
+
 // 编辑地址
   async editAddress(event){
     const {data} = event
@@ -110,6 +153,16 @@ class CmsController extends BaseController{
     delete data._id
 
     try{
+      if(data.isDefault){
+        // 如果当前设置为默认地址，则需将原有记录中的默认字段设置为false
+        await this.cloud.db.collection("addressLists").where({
+          _id: this.cloud._.exists(true)
+        }).update({
+          data:{
+            isDefault:false
+          }
+        })
+      }
       await this.cloud.db.collection("addressLists").where({
         _id: this.cloud._.eq(_id)
       }).update({
@@ -120,6 +173,7 @@ class CmsController extends BaseController{
       return this.fail(-10010,'failed...',err) 
     }
   }
+
   async getAddress(event){
     const {data} = event
     try{
@@ -175,4 +229,3 @@ class CmsController extends BaseController{
 }
 
 module.exports = CmsController
-// export default CmsController

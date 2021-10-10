@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Picker, Text } from '@tarojs/components'
 import { callCloudFunction } from '@/helper/fetch'
@@ -8,13 +8,14 @@ import 'taro-ui/dist/style/components/icon.scss'
 import 'taro-ui/dist/style/components/list.scss'
 import 'taro-ui/dist/style/components/switch.scss'
 import 'taro-ui/dist/style/components/toast.scss'
+import provinces from './province'
+import city from './cities'
 import './index.scss'
 
 const AddressDetails: React.FC = () => {
-  const selector = ['上海', '安徽', '北京']
-  const cities = ['浦东新区', '长宁区', '徐汇区']
-  const [selectedProvince, setProvince] = useState('上海')
-  const [selectedCity, setCity] = useState('上海')
+  const [cities, setCities] = useState<any[]>([])
+  const [selectedProvince, setProvince] = useState('')
+  const [selectedCity, setCity] = useState('')
   const [isOpened, setOpened] = useState(false)
   const [validOpen, setValidOpen] = useState(false)
   const [validMsg, setValidMsg] = useState('')
@@ -35,20 +36,24 @@ const AddressDetails: React.FC = () => {
     addressDetails: '请输入详细地址',
   }
 
-  Taro.getStorage({
-    key: 'openid',
-    success: (res) => {
-      res.data && setUserId(res.data)
-    },
-  })
+  useEffect(() => {
+    Taro.getStorage({
+      key: 'openid',
+      success: (res) => {
+        res.data && setUserId(res.data)
+      },
+    })
 
-  // 编辑收货地址
-  Taro.getStorage({
-    key: 'curAddressList',
-    success: (res) => {
-      res.data && setForm(res.data)
-    },
-  })
+    // 编辑收货地址
+    Taro.getStorage({
+      key: 'curAddressList',
+      success: (res) => {
+        res.data && setForm(res.data)
+        setProvince(res.data.province)
+        setCity(res.data.city)
+      },
+    })
+  }, [])
 
   /**
    *
@@ -62,19 +67,19 @@ const AddressDetails: React.FC = () => {
   // 省份选择
   const selectProvinceOnChange = (e) => {
     const _index = Number(e.detail.value)
-    setProvince(selector[_index])
+
+    setProvince(provinces[_index].name)
+    setCities(city[provinces[_index].id])
   }
 
   // 城市选择
   const selectCityOnChange = (e) => {
-    console.log(e)
     const _index = Number(e.detail.value)
-    setCity(cities[_index])
+    setCity(cities[_index].name)
   }
 
   // form 提交
   const onSubmit = (event) => {
-    debugger
     console.log('...', proform)
     for (let i in validateForm) {
       if (!proform[i]) {
@@ -143,12 +148,22 @@ const AddressDetails: React.FC = () => {
           value={proform.tel}
           onChange={(val) => handleChange('tel', val)}
         />
-        <Picker mode='selector' range={selector} onChange={selectProvinceOnChange}>
+        <Picker
+          mode='selector'
+          range={provinces}
+          rangeKey='name'
+          onChange={selectProvinceOnChange}
+        >
           <AtList>
             <AtListItem title='所在省份' extraText={selectedProvince} />
           </AtList>
         </Picker>
-        <Picker mode='selector' range={cities} onChange={selectCityOnChange}>
+        <Picker
+          mode='selector'
+          range={cities}
+          rangeKey='name'
+          onChange={selectCityOnChange}
+        >
           <AtList>
             <AtListItem title='所在城市' extraText={selectedCity} />
           </AtList>

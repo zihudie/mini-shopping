@@ -1,4 +1,5 @@
 // import cloud, { init, DYNAMIC_CURRENT_ENV, database } from 'wx-server-sdk'
+// eslint-disable-next-line import/no-commonjs
 const cloud = require('wx-server-sdk')
 
 cloud.init({

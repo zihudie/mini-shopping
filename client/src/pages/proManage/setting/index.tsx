@@ -21,7 +21,7 @@ import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
 const ProSettingPage: React.FC = () => {
-  const selector = ['运动', '休闲', '情侣', '商务']
+  const selector = ['男表', '女表', '情侣表', '商务类']
   const [selected, setSelected] = useState('运动')
   const [isOpened, setOpened] = useState(false)
   const [proform, setForm] = useState({
@@ -106,7 +106,7 @@ const ProSettingPage: React.FC = () => {
         data: proform,
       },
     }).then((res) => {
-      // 提示操作成功，跳转回到
+      // 提示操作成功，跳转
       setOpened(true)
       Taro.navigateTo({ url: '/pages/proManage/index' })
     })

@@ -6,21 +6,6 @@ import './index.scss'
 const OrderPage: React.FC = () => {
   const [current, setCurrent] = useState(0)
 
-  const tabList = [{ title: '全部' }, { title: '已完成' }, { title: '已取消' }]
-
-  const handleClick = (val) => {
-    setCurrent(val)
-    // todo 发送请求 进行订单的筛选
-  }
-
-  const item = {
-    productName:
-      '黑人（DARLIE）双重薄荷牙膏225g 清新口气 防蛀固齿 口腔清洁（新旧包装随机发放）',
-    price: '12.55',
-    num: 5,
-    id: 'sku5998552255',
-  }
-
   return (
     <View className='orders-confirm__module'>
       {/* 是否有地址 */}

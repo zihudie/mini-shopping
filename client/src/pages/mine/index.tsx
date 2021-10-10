@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro, { usePullDownRefresh, useDidShow } from '@tarojs/taro'
 import icoConfirm from './assets/order_done.png'
@@ -7,10 +7,12 @@ import './index.scss'
 
 const MinePage: React.FC = () => {
   const [userId, setUserId] = useState('')
+
   const [curUserInfo, setCurUserInfo] = useState({
     nickName: '',
     avatarUrl: '',
   })
+
   const checkLogin = () => {
     if (!userId) {
       Taro.navigateTo({

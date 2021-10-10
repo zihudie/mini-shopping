@@ -24,7 +24,7 @@ export default {
   tabBar: {
     // custom: true,
     color: '#7b7b7a',
-    selectedColor: '#c0a369',
+    selectedColor: '#6190e8',
     backgroundColor: '#222222',
     list: [
       {
@@ -36,8 +36,8 @@ export default {
       {
         pagePath: 'pages/category/index',
         text: '分类',
-        iconPath: 'assets/shoppingbag.png',
-        selectedIconPath: 'assets/shoppingbag_active.png',
+        iconPath: 'assets/type.png',
+        selectedIconPath: 'assets/type_active.png',
       },
       {
         pagePath: 'pages/cart/index',

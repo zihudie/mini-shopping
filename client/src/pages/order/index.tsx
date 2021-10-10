@@ -60,15 +60,6 @@ const OrderPage: React.FC = () => {
     setCurrent(val)
   }
 
-  // const item = {
-  //   productName:
-  //     '黑人（DARLIE）双重薄荷牙膏225g 清新口气 防蛀固齿 口腔清洁（新旧包装随机发放） ',
-  //   price: '12.55',
-  //   num: 5,
-  //   cover: icoConfirm,
-  //   id: 'sku5998552255',
-  // }
-
   return (
     <View className='orders'>
       <AtTabs current={current} tabList={tabList} onClick={handleClick}>

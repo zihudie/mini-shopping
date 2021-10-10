@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Image, Text } from '@tarojs/components'
+import Taro, { setStorage } from '@tarojs/taro'
 import { AtInputNumber } from 'taro-ui'
 import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/input-number.scss'
@@ -7,25 +8,19 @@ import 'taro-ui/dist/style/components/icon.scss'
 import './index.scss'
 
 const CartPage: React.FC = () => {
+  const [curId, setCurId] = useState('')
   const [isAllChecked, setAllChecked] = useState(false)
   const [lenAll, setLenAll] = useState(false)
   const [total, setTotal] = useState(0)
-  const [cartList, setCartList] = useState([
-    {
-      proName: '卡西欧(CASIO)男表G-SHOCK小方块金砖银砖六局电波太阳能动力多功能小金块',
-      price: 1236,
-      buyNum: 1,
-      isSelected: false,
-      total: 1236,
+  const [cartList, setCartList] = useState<any[]>([])
+
+  Taro.getStorage({
+    key: 'openid',
+    success: (res) => {
+      console.log('openid...', res.data)
+      setCurId(res.data)
     },
-    {
-      proName: '罗森(CASIO)男表G-SHOCK小方块金砖银砖六局电波太阳能动力多功能小金块',
-      price: 2360,
-      buyNum: 2,
-      isSelected: false,
-      total: 4720,
-    },
-  ])
+  })
 
   const handleChange = (index: number, value: number, e: any) => {
     let _total = 0
@@ -51,17 +46,18 @@ const CartPage: React.FC = () => {
   }
 
   useEffect(() => {
+    if (!curId) return
     callCloudFunction({
       name: 'shopApis',
       data: {
         $url: 'pro/getCartData',
+        data: { openId: curId },
       },
     }).then((res: any) => {
       console.log('..hhdddah....', res)
-
-      // setCartList(res)
+      setCartList(res)
     })
-  }, [])
+  }, [curId])
 
   // 点击每项
   const itemClick = (index: number) => {
@@ -108,9 +104,19 @@ const CartPage: React.FC = () => {
 
     setTotal(_total)
     setCartList(newArr)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAllChecked])
+
+  // 总结算
+  const totalCalculate = () => {
+    Taro.setStorage({
+      key: 'orderPros',
+      data: cartList,
+    })
+    Taro.navigateTo({
+      url: '/pages/order/orderConfirm/index',
+    })
+  }
 
   return (
     <View className='cart-model'>
@@ -124,9 +130,11 @@ const CartPage: React.FC = () => {
                   itemClick(index)
                 }}
               ></View>
-              <View className='pics'>{/* <Image src={} /> */}</View>
+              <View className='pics'>
+                <Image mode='widthFix' src={list.curSku.url} />
+              </View>
               <View className='cons'>
-                <View className='name'>{list.proName}</View>
+                <View className='name'>{list.productName}</View>
                 <View className='price_line'>
                   <Text className='price'>¥{list.price}</Text>
                   <View className='num_wrap'>
@@ -156,7 +164,9 @@ const CartPage: React.FC = () => {
             <Text>全选</Text>
           </View>
           <Text className='total'>总计:¥{total}</Text>
-          <Text className='calculate'>结算</Text>
+          <Text className='calculate' onClick={totalCalculate}>
+            结算
+          </Text>
         </View>
       </View>
     </View>

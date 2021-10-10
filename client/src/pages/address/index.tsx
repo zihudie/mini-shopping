@@ -17,7 +17,6 @@ interface listType {
 }
 const AdressPage: React.FC = () => {
   const [curId, setCurId] = useState('')
-
   const [addressList, setAddressList] = useState<listType[]>([
     {
       addressDetails: '',
@@ -34,6 +33,10 @@ const AdressPage: React.FC = () => {
       console.log('openid...', res.data)
       setCurId(res.data)
     },
+  })
+
+  useDidShow(() => {
+    getAddressLists()
   })
 
   const settingOptions = [
@@ -54,16 +57,26 @@ const AdressPage: React.FC = () => {
   ]
 
   const itemClick = (val, item) => {
-    console.log(val, item)
+    let updateType = ''
     if (val.text === '设为默认') {
-      // TODO  地址设置为默认
+      updateType = 'setDefault'
     } else if (val.text === '删除') {
-      // TODO  delete 地址
-      // 成功之后进行刷新重新请求操作
+      updateType = 'delete'
     }
+
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'pro/updateAddress',
+        data: { openId: curId, addressId: item._id, type: updateType },
+      },
+    }).then((result: any) => {
+      // 成功之后进行刷新重新请求操作
+      console.log('删除成功')
+      getAddressLists()
+    })
   }
 
-  // todo  编辑地址
   const handleEdit = (item) => {
     Taro.setStorage({
       key: 'curAddressList',
@@ -79,7 +92,7 @@ const AdressPage: React.FC = () => {
     Taro.navigateTo({ url: '/pages/address/details/index' })
   }
 
-  useEffect(() => {
+  const getAddressLists = () => {
     if (!curId) {
       return
     }
@@ -90,9 +103,12 @@ const AdressPage: React.FC = () => {
         data: { openId: curId },
       },
     }).then((result: any) => {
-      console.log('getData.....', result)
       setAddressList(result)
     })
+  }
+  useEffect(() => {
+    getAddressLists()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [curId])
 
   const handlePhone = (tel: string) => {

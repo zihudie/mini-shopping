@@ -59,6 +59,11 @@ exports.main = async  (event,context) => {
     ctx.body = await api.pro.addAddress(event)
   })
 
+  // 编辑用户地址列表
+  app.router('pro/updateAddress', async (ctx) => {
+    ctx.body = await api.pro.updateAddress(event)
+  })
+
   // 用户新增地址
   app.router('pro/editAddress', async (ctx) => {
     ctx.body = await api.pro.editAddress(event)
