@@ -69,7 +69,6 @@ const HomePage: React.FC = () => {
 
   return (
     <View className='app'>
-      {/* 导航搜索*/}
       {/* swiper */}
       <SwpierContent />
       {/* productList */}

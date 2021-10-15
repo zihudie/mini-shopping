@@ -27,9 +27,6 @@ const OrderItemPage: React.FC<ItemProps> = (props) => {
         <Text className='nums'> x{buyNum} </Text>
       </View>
       <View className='model-total'>实付¥{totalPrice}</View>
-      {/* <View className='model-btns'>
-        <Text className='buy-btn'>再次购买</Text>
-      </View> */}
     </View>
   )
 }

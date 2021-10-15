@@ -8,35 +8,7 @@ class CmsController extends BaseController{
     // const {proCode,productName} = event.data || {}
     try {
       const result = await this.cloud.db.collection("cms_commodity")
-      // .where(
-      //  [
-      //   {
-      //     proCode:this.cloud.db.RegExp({
-      //       regexp: proCode,
-      //       options:'i'
-      //     })
-      //    },
-      //   {
-      //     productName:this.cloud.db.RegExp({
-      //       regexp: productName,
-      //       options:'i'
-      //     })
-      //    }
-      //  ]
-      // )
-      // .field({
-      //   _id:false,
-      //   city:true,
-      //   province:true,
-      //   gdp:true
-      // })
-      // .orderBy("gdp","desc")
-      // .skip(0)
-      // .limit(20)
       .get()
-      
-      
-
       return this.success(result.data) 
     }catch (err){
       return this.fail(-10010,'failed...',err) 
