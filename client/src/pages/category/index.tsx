@@ -1,71 +1,119 @@
-import React, { useState } from 'react'
-import { View } from '@tarojs/components'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import React, { useState, useEffect } from 'react'
+import { View, Image, Text } from '@tarojs/components'
+import { AtTabs, AtTabsPane, AtToast } from 'taro-ui'
+import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/tabs.scss'
+import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
-const HomePage: React.FC = () => {
+const CategoryPage: React.FC = () => {
+  // const selector = ['男表', '女表', '情侣表', '商务手表']
   const tabList = [
     { title: '男表' },
     { title: '女表' },
     { title: '情侣表' },
-    { title: '运动手表' },
+    { title: '商务表' },
   ]
-
-  const lists = [
-    {
-      productName: '天王手表',
-      id: '123323223',
-      productCover: 'http://articleimg.xbiao.com/2015/0623/201506231435028356156.jpg',
-      salesPrice: '1200',
-    },
-    {
-      productName: '天王手表',
-      id: '1233232798',
-      productCover: 'http://articleimg.xbiao.com/2015/0623/201506231435028356156.jpg',
-      salesPrice: '1200',
-    },
-    {
-      productName: '天王手表',
-      id: '1233232223',
-      productCover: 'http://articleimg.xbiao.com/2015/0623/201506231435028356156.jpg',
-      salesPrice: '1200',
-    },
-    {
-      productName: '天王手表',
-      id: '12332332798',
-      productCover: 'http://articleimg.xbiao.com/2015/0623/201506231435028356156.jpg',
-      salesPrice: '1200',
-    },
-  ]
-
+  const [proList, setProLists] = useState<any[]>([])
   const [current, setCurrent] = useState(0)
+  const [loading, setLoading] = useState(true)
+
   const handleClick = (val) => {
     setCurrent(val)
   }
+  const goToDetails = (id: string) => {
+    // 数据存储 跳转至详情页面
+    Taro.navigateTo({
+      url: `/pages/details/index?id=${id}`,
+    })
+  }
+
+  useEffect(() => {
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'pro/getList',
+      },
+    }).then((result: any) => {
+      // 获取默认的地址
+      console.log('getData.....', result)
+      const _proList1 = result.filter((item) => item.category === 1)
+      const _proList2 = result.filter((item) => item.category === 2)
+      const _proList3 = result.filter((item) => item.category === 3)
+      const _proList4 = result.filter((item) => item.category === 4)
+      const _prosLists = [_proList1, _proList2, _proList3, _proList4]
+      if (result) {
+        setLoading(false)
+      }
+
+      // 产品分类展示
+      setProLists(_prosLists)
+    })
+  }, [])
+
   return (
     <View className='app'>
-      <AtTabs
-        current={current}
-        scroll
-        animated={false}
-        height='500px'
-        tabDirection='vertical'
-        tabList={tabList}
-        onClick={handleClick}
-      >
-        <AtTabsPane tabDirection='vertical' current={current} index={0}>
-          <View className='category'>内容1</View>
-        </AtTabsPane>
-        <AtTabsPane tabDirection='vertical' current={current} index={1}>
-          <View className='category'>标签页二的内容</View>
-        </AtTabsPane>
-        <AtTabsPane tabDirection='vertical' current={current} index={2}>
-          <View className='category'>标签页三的内容</View>
-        </AtTabsPane>
-      </AtTabs>
+      {loading ? (
+        <AtToast isOpened={loading} text='加载中' status='loading'></AtToast>
+      ) : (
+        <AtTabs
+          current={current}
+          scroll
+          animated={false}
+          height='500px'
+          tabDirection='vertical'
+          tabList={tabList}
+          onClick={handleClick}
+        >
+          {proList.length &&
+            proList.map((list, idx) => {
+              return (
+                <>
+                  <AtTabsPane
+                    tabDirection='vertical'
+                    current={current}
+                    index={0}
+                    key={idx}
+                  >
+                    <View className='category'>
+                      <View>
+                        {list.length ? (
+                          list.map((item, index) => {
+                            return (
+                              <View key={index}>
+                                <View className='pro-list'>
+                                  <View className='pro-list-inner'>
+                                    <Image
+                                      src={item.productCover}
+                                      onClick={() => {
+                                        goToDetails(item._id)
+                                      }}
+                                    />
+                                    <View className='pro-name'>{item.productName}</View>
+                                    <View className='pro-bottom'>
+                                      <Text>￥{item.salesPrice}</Text>
+                                      {/* <AtButton type='secondary' size='small' onClick={addToCart} circle>
+              加入购物车
+            </AtButton> */}
+                                    </View>
+                                  </View>
+                                </View>
+                              </View>
+                            )
+                          })
+                        ) : (
+                          <View>暂无数据</View>
+                        )}
+                      </View>
+                    </View>
+                  </AtTabsPane>
+                </>
+              )
+            })}
+        </AtTabs>
+      )}
     </View>
   )
 }
 
-export default HomePage
+export default CategoryPage

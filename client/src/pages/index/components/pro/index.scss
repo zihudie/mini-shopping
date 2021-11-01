@@ -26,4 +26,11 @@
 }
 .pro-name {
   padding:  8px;
+  min-height: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-spacing: break-all;
 }

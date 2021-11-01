@@ -6,16 +6,73 @@ page{
 .product-lists{
   padding:20px   10px
 }
+
 .product-list{
   display: flex;
   flex-wrap: wrap;
-  border-bottom:1px solid #eae9e9;
+  
   &:last-child{
     border-bottom: none;
   }
-  padding: 10px 0;
   .item{
     width: 50%;
     padding: 10px 0;
+  }
+}
+
+.product-list-model{
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+  border-radius: 10px;
+  padding:10px 15px;
+  margin-bottom: 16px;
+
+  .list-button{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    border-top:1px solid  rgba(190,190,190,.2);
+    padding: 20px 0;
+  }
+
+  .at-button {
+    height: 66px;
+    line-height: 64px;
+  }
+}
+
+.at-list__item .item-content__info-title ,
+.at-list__item .item-extra__info,
+.at-input__input, .at-input__title{
+  font-size: 28px;
+}
+
+.date-label{
+  font-size: 28px;
+  display:block;
+  padding: 30px;
+}
+
+.date-select{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  picker{
+    width: 50%;
+  }
+}
+
+.at-list__item::after {
+  border-bottom: none;
+}
+
+.search-add{
+  display: flex;
+  justify-content: space-around;
+  padding: 20px 0;
+  
+  .at-button {
+    padding: 0 50px;
+    height: 76px;
+    line-height:74px;
   }
 }

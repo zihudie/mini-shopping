@@ -1,12 +1,18 @@
 export default {
   pages: [
-    'pages/proManage/setting/index',
-    'pages/proManage/index',
-    'pages/mine/index',
-    'pages/details/index',
-    'pages/category/index',
     'pages/index/index',
+    'pages/details/index',
+    'pages/order/orderDetails/index',
+    'pages/order/orderConfirm/index',
     'pages/cart/index',
+    'pages/address/details/index',
+    'pages/address/index',
+    'pages/order/index',
+    'pages/mine/index',
+    'pages/proManage/index',
+    'pages/proManage/setting/index',
+    'pages/category/index',
+    'pages/login/index',
   ],
   window: {
     backgroundTextStyle: 'light',
@@ -14,10 +20,11 @@ export default {
     navigationBarTitleText: '手表商城',
     navigationBarTextStyle: 'black',
   },
+
   tabBar: {
     // custom: true,
     color: '#7b7b7a',
-    selectedColor: '#c0a369',
+    selectedColor: '#6190e8',
     backgroundColor: '#222222',
     list: [
       {
@@ -29,8 +36,8 @@ export default {
       {
         pagePath: 'pages/category/index',
         text: '分类',
-        iconPath: 'assets/shoppingbag.png',
-        selectedIconPath: 'assets/shoppingbag_active.png',
+        iconPath: 'assets/type.png',
+        selectedIconPath: 'assets/type_active.png',
       },
       {
         pagePath: 'pages/cart/index',

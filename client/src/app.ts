@@ -1,6 +1,6 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { callCloudFunction } from '@/helper/fetch'
+// import { callCloudFunction } from '@/helper/fetch'
 
 import './app.scss'
 
@@ -12,29 +12,22 @@ class App extends Component {
     })
   }
   componentDidMount() {
-    // 云开发初始化
-    // Taro.getUserInfo({
-    //   success: function(res) {
-    //     console.log(res)
-    //   }
-    // })
     // const db = Taro.cloud.database()
     // const users_db = db.collection('users')
     // 获取用户信息  进行存储
-    callCloudFunction({
-      name: 'shopApis',
-      data: {
-        $url: 'login',
-      },
-    }).then((res) => {
-      console.log('res', res)
-      const { openid } = res as any
-      Taro.setStorage({
-        key: 'openid',
-        data: openid,
-      })
-    })
-
+    // callCloudFunction({
+    //   name: 'shopApis',
+    //   data: {
+    //     $url: 'login',
+    //   },
+    // }).then((res) => {
+    //   console.log(res)
+    //   const { openid } = res as any
+    //   Taro.setStorage({
+    //     key: 'openid',
+    //     data: openid,
+    //   })
+    // })
     // users_db.where({
     //   openid
     // }).get().then(res => {

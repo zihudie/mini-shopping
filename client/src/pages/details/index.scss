@@ -2,14 +2,13 @@
   height: 600px;
   image{
     width: 100%;
-    height: 600px;
   }
 }
 
 .details-img{
   width: 100%;
-  height: 1000px;
 }
+
 .price-img{
   width: 100%;
   height: 600px;
@@ -26,6 +25,7 @@
   align-items: top;
   justify-content: space-around;
 }
+
 .name{
   flex: 1;
   padding-right: 10px;
@@ -48,22 +48,25 @@
 
 .pro-prices{
   height: 100px;
-  background:url("../../assets/details/price_bg.png")  0 0  no-repeat;
-  background-size:100%  100%;
-  color: #fff;
-  padding-left: 20px;
+  padding: 0 20px;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: 20px;
-  justify-content: center;
 }
+
 .sales-price{
   font-size: 30px;
   font-weight: 800;
 }
 .original-price{
   text-decoration: line-through;
+  color: #999;
+  padding-left: 16px;
+  font-weight: 400;
+  font-size: 26px;
 }
+
 // bottom
 .pro-bottom{
   display: flex;
@@ -75,7 +78,7 @@
   z-index: 2;
   left: 0;
   bottom: 0;
-  background:#fff;
+  background:#efefef;
   width: 100%;
   .cart.at-button--primary{
     background-image: linear-gradient(135deg,#f2140c,#f2270c 70%,#f24d0c);
@@ -84,9 +87,9 @@
     background-image: linear-gradient(135deg,#ffba0d,#ffc30d 69%,#ffcf0d);
   }
   .at-button--primary{
-    height: 88px;
+    height: 66px;
     border: none;
-    line-height:88px;
+    line-height:66px;
   }
 }
 

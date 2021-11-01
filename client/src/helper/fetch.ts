@@ -14,6 +14,7 @@ export function callCloudFunction(
         ...param,
       })
       .then((callRes) => {
+        console.log(callRes)
         const { errMsg = '', result } = callRes
         if (result && errMsg.includes('ok')) {
           let apiResult = result as resultInterface

@@ -1,4 +1,6 @@
-const cloud = require('../tcb')
+// import cloud from '../tcb'
+const cloud  = require('../tcb')
+
 class BaseController {
   constructor( ) {
     this.cloud  = cloud
