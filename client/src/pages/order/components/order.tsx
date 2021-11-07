@@ -23,6 +23,7 @@ const OrderItemPage: React.FC<ItemProps> = (props) => {
         </View>
         <View className='cons'>
           <Text className='desc'> {productName} </Text>
+          <Text className='sku'>{curSku.sku}</Text>
         </View>
         <Text className='nums'> x{buyNum} </Text>
       </View>

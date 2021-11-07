@@ -1,58 +1,37 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
-import { AtButton, AtToast } from 'taro-ui'
 import Taro from '@tarojs/taro'
 
 import 'taro-ui/dist/style/components/toast.scss'
 import 'taro-ui/dist/style/components/button.scss'
 import './index.scss'
 
-interface ItemTypes {
-  productName: string
-  id: string
-  productCover: string
-  salesPrice: string
-}
+ 
 interface propItems {
   [key: string]: any
 }
 const ProductItem: React.FC<propItems> = (props) => {
-  const [userId, setUserId] = useState('')
+  // const [userId, setUserId] = useState('')
+  // const [isOpen, setOpen] = useState(false)
+  const { _id, productName, productCover, salesPrice } = props.item
+  // Taro.getStorage({
+  //   key: 'openid',
+  //   success: (res) => {
+  //     res.data && setUserId(res.data)
+  //   },
+  // })
 
-  const [isOpen, setOpen] = useState(false)
-  const { id, productName, productCover, salesPrice, inventory } = props.item
-  Taro.getStorage({
-    key: 'openid',
-    success: (res) => {
-      res.data && setUserId(res.data)
-    },
-  })
-
-  const addToCart = () => {
-    // 将当前商品加入购物车列表中  判断库存是否足够 如果不足则进行库存不足的提示
-    if (inventory < 1) {
-      setOpen(true)
-      return
-    }
-    // 判断用户登录状态
-    if (!userId) {
-      Taro.navigateTo({
-        url: '/pages/login/index',
-      })
-    } else {
-      // 加入购物车列表
-    }
-  }
+ 
 
   const goToDetails = () => {
+    // Taro.setStorage({
+    //   key: 'proMsg',
+    //   data: props.item,
+    // })
     // 数据存储 跳转至详情页面
+    console.log("hhhhhh",_id)
     Taro.navigateTo({
-      url: '/pages/details/index',
-    })
-
-    Taro.setStorage({
-      key: 'proMsg',
-      data: props.item,
+      url: '/pages/details/index?id='+_id,
     })
   }
 
@@ -64,13 +43,10 @@ const ProductItem: React.FC<propItems> = (props) => {
           <View className='pro-name'>{productName}</View>
           <View className='pro-bottom'>
             <Text>￥{salesPrice}</Text>
-            {/* <AtButton type='secondary' size='small' onClick={addToCart} circle>
-              加入购物车
-            </AtButton> */}
           </View>
         </View>
       </View>
-      <AtToast isOpened={isOpen} text='当前商品库存不足'></AtToast>
+      {/* <AtToast isOpened={isOpen} text='当前商品库存不足'></AtToast> */}
     </>
   )
 }

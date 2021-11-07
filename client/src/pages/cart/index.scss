@@ -23,7 +23,9 @@
     background: url(../../assets/imgs/icon_unselected.png) 0 0 no-repeat;
     background-size: 100% 100%;
   }
-
+  .cons{
+    flex: 1;
+  }
   .name {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -31,6 +33,16 @@
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     word-spacing: break-all;
+  }
+
+  .tag{
+    padding-top: 20px;
+    .inner{
+      border-radius: 20px;
+      padding: 4px 20px;
+      color: #fff;
+      background:#ef9d92;
+    }
   }
 
   .price{
@@ -50,7 +62,9 @@
     background-image: url(../../assets/imgs/icon_selected.png);
   }
 }
-
+.cart-wrap{
+  padding-bottom:150px;
+}
 .cart-bottom {
   padding: 10px;
   background: #fff;

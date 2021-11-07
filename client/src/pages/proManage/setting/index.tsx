@@ -83,17 +83,11 @@ const ProSettingPage: React.FC = () => {
   const fileChange = (files: any, index: number) => {
     console.log(files)
     const tempPro = proform.productLists
-<<<<<<< HEAD
-    tempPro[index].img = [{ url: files[files.length - 1].url }]
-    console.log(tempPro)
-
-=======
     if (files.length) {
       tempPro[index].img = [{ url: files[files.length - 1].url }]
     } else {
       tempPro[index].img = [{ url: '' }]
     }
->>>>>>> 14c0e0e1ee71b535cc3c21094f20e015a9173972
     setForm({ ...proform, productLists: tempPro })
   }
   const fileFail = (mes: string, index: number) => {
@@ -159,11 +153,7 @@ const ProSettingPage: React.FC = () => {
           required
           name='salesPrice'
           title='售卖价格'
-<<<<<<< HEAD
-          type='number'
-=======
           type='digit'
->>>>>>> 14c0e0e1ee71b535cc3c21094f20e015a9173972
           placeholder='请输入售卖价格'
           value={proform.salesPrice}
           onChange={(val) => handleChange('salesPrice', val)}
@@ -221,25 +211,6 @@ const ProSettingPage: React.FC = () => {
                   value={list.sku}
                   onChange={(val) => handleListChange(_idx, 'sku', val)}
                 />
-<<<<<<< HEAD
-                <View>
-                  <AtImagePicker
-                    multiple
-                    files={list.img}
-                    onChange={(files) => fileChange(files, _idx)}
-                    onFail={(mes) => fileFail(mes, _idx)}
-                  />
-                  <AtInput
-                    required
-                    name={`price${_idx}`}
-                    title='价格'
-                    type='number'
-                    placeholder='请输入价格'
-                    value={list.price}
-                    onChange={(val) => handleListChange(_idx, 'price', val)}
-                  />
-                </View>
-=======
                 <AtInput
                   required
                   name={`price${_idx}`}
@@ -249,7 +220,6 @@ const ProSettingPage: React.FC = () => {
                   value={list.price}
                   onChange={(val) => handleListChange(_idx, 'price', val)}
                 />
->>>>>>> 14c0e0e1ee71b535cc3c21094f20e015a9173972
               </View>
             )
           })}

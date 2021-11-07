@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { callCloudFunction } from '@/helper/fetch'
-import { AtModal } from 'taro-ui'
+import { AtModal,AtToast } from 'taro-ui'
 import Taro from '@tarojs/taro'
 import 'taro-ui/dist/style/components/modal.scss'
+import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
 
 interface listType {
@@ -19,6 +20,7 @@ interface listType {
 const OrderPage: React.FC = () => {
   // 获取用户地址信息
   const [curId, setCurId] = useState('')
+  const [toastOpen, setToastOpen] = useState(false)
   const [confirmOpen, setConfirmOpen] = useState(false)
   const [totalAmount, setTotalAmount] = useState(0)
   const [proDetails, setPorDetails] = useState<any[]>([])
@@ -55,17 +57,42 @@ const OrderPage: React.FC = () => {
 
   useEffect(() => {
     if (!curId) return
-    callCloudFunction({
-      name: 'shopApis',
-      data: {
-        $url: 'pro/getAddress',
-        data: { openId: curId },
+    // 编辑收货地址
+    Taro.getStorage({
+      key: 'curAddressList',
+      success: (res) => {
+        if(res.data){
+          setAddressList(res.data)
+        }else{
+          //如果有本地缓存地址 则用本地缓存 否则重新请求
+          callCloudFunction({
+            name: 'shopApis',
+            data: {
+              $url: 'pro/getAddress',
+              data: { openId: curId },
+            },
+          }).then((result: any) => {
+            // 获取默认的地址
+            console.log('getData.....', result)
+            setAddressList(result[0] || {})
+          })
+        }
       },
-    }).then((result: any) => {
-      // 获取默认的地址
-      console.log('getData.....', result)
-      setAddressList(result[0] || {})
-    })
+      fail:()=>{
+        //如果有本地缓存地址 则用本地缓存 否则重新请求
+        callCloudFunction({
+          name: 'shopApis',
+          data: {
+            $url: 'pro/getAddress',
+            data: { openId: curId , isDefault: true},
+          },
+        }).then((result: any) => {
+          // 获取默认的地址
+          console.log('getData.....', result)
+          setAddressList(result[0] || {})
+        })
+      }
+    })  
   }, [curId])
 
   const orderPay = () => {
@@ -74,8 +101,13 @@ const OrderPage: React.FC = () => {
     setConfirmOpen(true)
   }
 
+  const  selectAddress = ()=>{
+    Taro.navigateTo({
+      url: '/pages/address/index?from=confirm'
+    })
+  }
+
   const btnHandle = (type: boolean) => {
-    console.log('type......', type)
     // 1 已完成 0 已取消
     const orderType = type ? 1 : 0
     const _orderData: any = []
@@ -92,7 +124,6 @@ const OrderPage: React.FC = () => {
         orderType: orderType,
       })
     })
-
     // 清除orderPro 的storage
     callCloudFunction({
       name: 'shopApis',
@@ -101,8 +132,12 @@ const OrderPage: React.FC = () => {
         data: { openId: curId, lists: [..._orderData] },
       },
     }).then(() => {
+      setToastOpen(true)
       Taro.removeStorage({
         key: 'orderPros',
+      })
+      Taro.removeStorage({
+        key: 'curAddressList',
       })
       Taro.switchTab({
         url: '/pages/mine/index',
@@ -114,7 +149,7 @@ const OrderPage: React.FC = () => {
     <View className='orders-confirm__module'>
       {/* 是否有地址 */}
       {addressList.name ? (
-        <View className='address-module'>
+        <View className='address-module' onClick={selectAddress}>
           <View className='name-tel'>
             {addressList.name} {addressList.tel}
           </View>
@@ -125,7 +160,7 @@ const OrderPage: React.FC = () => {
           </View>
         </View>
       ) : (
-        <View className='address-module'>请添加地址</View>
+        <View className='address-module' onClick={selectAddress}>请添加地址</View>
       )}
       {/* 订单信息 */}
       <View className='pro-lists'>
@@ -154,6 +189,7 @@ const OrderPage: React.FC = () => {
           支付
         </View>
       </View>
+      <AtToast isOpened={toastOpen} text='购买成功' duration={800}></AtToast>
       <AtModal
         isOpened={confirmOpen}
         cancelText='取消'

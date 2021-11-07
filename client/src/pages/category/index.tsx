@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtToast } from 'taro-ui'
+import Taro, { usePullDownRefresh} from '@tarojs/taro'
 import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/tabs.scss'
 import 'taro-ui/dist/style/components/toast.scss'
@@ -9,15 +10,14 @@ import './index.scss'
 const CategoryPage: React.FC = () => {
   // const selector = ['男表', '女表', '情侣表', '商务手表']
   const tabList = [
-    { title: '男表' },
-    { title: '女表' },
+    { title: '男士表' },
+    { title: '女士表' },
     { title: '情侣表' },
     { title: '商务表' },
   ]
   const [proList, setProLists] = useState<any[]>([])
   const [current, setCurrent] = useState(0)
   const [loading, setLoading] = useState(true)
-
   const handleClick = (val) => {
     setCurrent(val)
   }
@@ -27,29 +27,38 @@ const CategoryPage: React.FC = () => {
       url: `/pages/details/index?id=${id}`,
     })
   }
+    const fetchData = ()=>{
+      callCloudFunction({
+        name: 'shopApis',
+        data: {
+          $url: 'pro/getList',
+        },
+      }).then((result: any) => {
+        // 获取默认的地址
+        console.log('getData.....', result)
+        const _proList1 = result.filter((item) => item.category === 1)
+        const _proList2 = result.filter((item) => item.category === 2)
+        const _proList3 = result.filter((item) => item.category === 3)
+        const _proList4 = result.filter((item) => item.category === 4)
+        const _prosLists = [_proList1, _proList2, _proList3, _proList4]
+        if (result) {
+          setLoading(false)
+        }
+        // 产品分类展示
+        setProLists(_prosLists)
+      })
+    }
+    // 下拉刷新获取最新数据
+    usePullDownRefresh(()=>{
+      fetchData()
+      Taro.stopPullDownRefresh()
+    })
+
 
   useEffect(() => {
-    callCloudFunction({
-      name: 'shopApis',
-      data: {
-        $url: 'pro/getList',
-      },
-    }).then((result: any) => {
-      // 获取默认的地址
-      console.log('getData.....', result)
-      const _proList1 = result.filter((item) => item.category === 1)
-      const _proList2 = result.filter((item) => item.category === 2)
-      const _proList3 = result.filter((item) => item.category === 3)
-      const _proList4 = result.filter((item) => item.category === 4)
-      const _prosLists = [_proList1, _proList2, _proList3, _proList4]
-      if (result) {
-        setLoading(false)
-      }
-
-      // 产品分类展示
-      setProLists(_prosLists)
-    })
+    fetchData()
   }, [])
+
 
   return (
     <View className='app'>
@@ -76,12 +85,12 @@ const CategoryPage: React.FC = () => {
                     key={idx}
                   >
                     <View className='category'>
-                      <View>
+                      <View className='pro-wrap'>
                         {list.length ? (
                           list.map((item, index) => {
                             return (
-                              <View key={index}>
-                                <View className='pro-list'>
+                              
+                                <View className='pro-list' key={index}>
                                   <View className='pro-list-inner'>
                                     <Image
                                       src={item.productCover}
@@ -98,7 +107,7 @@ const CategoryPage: React.FC = () => {
                                     </View>
                                   </View>
                                 </View>
-                              </View>
+                              
                             )
                           })
                         ) : (

@@ -6,13 +6,16 @@
 const TcbRouter =  require("tcb-router")
 const CmsController = require('./controllers/cmsApis')
 const ProController = require('./controllers/proApis')
+const FileController = require('./controllers/upload')
 const LoginController = require('./controllers/login')
+
 
 
 const api = {
   login: new LoginController(),
   cms : new CmsController(),
-  pro : new ProController()
+  pro : new ProController(),
+  file: new FileController()
 }
 
 exports.main = async  (event,context) => {
@@ -30,6 +33,10 @@ exports.main = async  (event,context) => {
   app.router('getPhoneNumber', async (ctx) => {
     ctx.body = await api.login.getPhoneNumber(event)
   })
+  // 上传图片
+  app.router('file/upload', async (ctx) => {
+    ctx.body = await api.file.uploadFile(event)
+  })
   // 
   app.router('cms/getData', async (ctx) => {
     ctx.body = await api.cms.getData(event)
@@ -38,7 +45,14 @@ exports.main = async  (event,context) => {
   app.router('cms/addData', async (ctx) => {
     ctx.body = await api.cms.addData(event)
   })
-
+  // 编辑商品列表
+  app.router('cms/editData', async (ctx) => {
+     ctx.body = await api.cms.editData(event)
+  })
+   //获取订单列表
+   app.router('cms/getOrder', async (ctx) => {
+    ctx.body = await api.cms.getOrder(event)
+  })
   // 小程序客户端
   app.router('pro/getList', async (ctx) => {
     ctx.body = await api.pro.getList(event)
@@ -64,7 +78,7 @@ exports.main = async  (event,context) => {
     ctx.body = await api.pro.updateAddress(event)
   })
 
-  // 用户新增地址
+  // 更新地址
   app.router('pro/editAddress', async (ctx) => {
     ctx.body = await api.pro.editAddress(event)
   })

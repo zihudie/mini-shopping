@@ -3,12 +3,16 @@
   padding: 20px ;
   overflow-y:auto
 }
-
+.pro-wrap{
+  display: flex;
+  flex-wrap: nowrap;
+}
 .pro-list {
   width: 50%;
   margin-bottom: 20px;
   image {
     height: 260px;
+    width: 100%;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
   }
@@ -31,8 +35,8 @@
   }
 }
 .pro-name {
-  padding:  8px;
-  min-height: 72px;
+  padding: 8px;
+  height: 72px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperItem, View, Image } from '@tarojs/components'
 import { AtToast } from 'taro-ui'
+import Taro, { usePullDownRefresh} from '@tarojs/taro'
 import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/toast.scss'
 import ProductItem from './components/pro/item'
@@ -15,8 +16,14 @@ interface ItemTypes {
 interface ContentTypes {
   lists: ItemTypes[]
 }
+
+interface SwiperTypes {
+  lists: ItemTypes[]
+}
+
 // swiper
-const SwpierContent: React.FC = () => {
+const SwpierContent: React.FC<SwiperTypes>= (prop) => {
+  const lists = prop.lists
   return (
     <Swiper
       className='swiper-con'
@@ -26,15 +33,15 @@ const SwpierContent: React.FC = () => {
       indicatorDots
       autoplay
     >
-      <SwiperItem>
-        <Image src='//m.360buyimg.com/mobilecms/s700x280_jfs/t1/199283/5/5755/101865/612ed8b4Ebbb989cd/1039d07d145b7b5b.jpg!cr_1053x420_4_0!q70.jpg.dpg' />
-      </SwiperItem>
-      <SwiperItem>
-        <Image src='//m.360buyimg.com/mobilecms/s700x280_jfs/t1/204303/21/4495/270019/61318898Efd4f118f/8ce3de1268ea69cb.jpg!cr_1125x449_0_166!q70.jpg.dpg' />
-      </SwiperItem>
-      <SwiperItem>
-        <Image src='//m.360buyimg.com/mobilecms/s700x280_jfs/t1/204303/21/4495/270019/61318898Efd4f118f/8ce3de1268ea69cb.jpg!cr_1125x449_0_166!q70.jpg.dpg' />
-      </SwiperItem>
+      {
+        lists.map(item=>{
+          return (
+            <SwiperItem>
+               <Image src={item.productCover}/>
+            </SwiperItem>
+          )
+        })
+      }
     </Swiper>
   )
 }
@@ -51,9 +58,9 @@ const ProductContent: React.FC<ContentTypes> = (props) => {
 }
 const HomePage: React.FC = () => {
   const [proList, setProList] = useState<any[]>([])
+  const [recList, setRecList] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
+  const fetchData = () => {
     callCloudFunction({
       name: 'shopApis',
       data: {
@@ -63,14 +70,26 @@ const HomePage: React.FC = () => {
       if (res) {
         setLoading(false)
       }
+      const _lists = res.filter(item=>item.isRecommond)
+      setRecList(_lists)
+      // 推荐商品需要过滤出来
       setProList(res)
     })
+  }
+  // 下拉刷新获取最新数据
+  usePullDownRefresh(()=>{
+    fetchData()
+    Taro.stopPullDownRefresh()
+  })
+  // 进入页面进行数据的请求
+  useEffect(() => {
+    fetchData()
   }, [])
 
   return (
     <View className='app'>
       {/* swiper */}
-      <SwpierContent />
+      <SwpierContent  lists={recList}/>
       {/* productList */}
       {loading ? (
         <AtToast isOpened={loading} text='加载中' status='loading'></AtToast>

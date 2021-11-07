@@ -21,7 +21,7 @@ const AddressDetails: React.FC = () => {
   const [validMsg, setValidMsg] = useState('')
   const [userId, setUserId] = useState('')
   const [proform, setForm] = useState({
-    _id: '',
+    _id:null,
     name: '',
     tel: '',
     isDefault: false,

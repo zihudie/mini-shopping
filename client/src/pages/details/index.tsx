@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Swiper, SwiperItem, View, Text, Image } from '@tarojs/components'
 import { AtButton, AtFloatLayout, AtInputNumber, AtToast } from 'taro-ui'
-import Taro from '@tarojs/taro'
+import Taro ,{useDidShow,getCurrentInstance} from '@tarojs/taro'
 import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/modal.scss'
 import pricePic from 'assets/details/priceMsg.png'
@@ -11,13 +11,6 @@ import 'taro-ui/dist/style/components/input-number.scss'
 import 'taro-ui/dist/style/components/icon.scss'
 import 'taro-ui/dist/style/components/toast.scss'
 import './index.scss'
-
-interface ItemTypes {
-  productName: string
-  id: string
-  productCover: string
-  salesPrice: string
-}
 
 // swiper
 const SwpierContent: React.FC<{ covers: string[] }> = (props) => {
@@ -44,8 +37,11 @@ const SwpierContent: React.FC<{ covers: string[] }> = (props) => {
   )
 }
 const DetailPage: React.FC = () => {
+  const $instance = getCurrentInstance()
+  const curProId = $instance.router?.params.id
+  const [loading, setLoading] = useState(true)
   const [isOpened, setopen] = useState(false)
-
+  const [userId, setUserId] = useState('')
   // 购买产数量
   const [nums, setVale] = useState(1)
 
@@ -61,17 +57,50 @@ const DetailPage: React.FC = () => {
 
   const [proDetails, setDetails] = useState<{ [key: string]: any }>({})
 
-  useEffect(() => {
-    Taro.getStorage({
-      key: 'proMsg',
-      success: (res) => {
-        setDetails(res.data || {})
+  const fetchData = () => {
+    callCloudFunction({
+      name: 'shopApis',
+      data: {
+        $url: 'pro/getList',
+        data:{
+          proId:curProId
+        }
       },
+    }).then((res: any) => {
+      if (res) {
+        setLoading(false)
+      }
+      setDetails(res[0] || {})
+      // 推荐商品需要过滤出来
     })
-  }, [])
+  }
+  useDidShow(()=>{
+    // 进入页面获取用户openid 确认是登录状态
+    Taro.getStorage({
+      key: 'openid',
+      success: (res) => {
+        res.data && setUserId(res.data)
+      }
+    })
+  })
+  useEffect(() => {
+    fetchData()
+    //curProId
+    // 获取商品详情
+    // console.log('....effect')
+    // Taro.getStorage({
+    //   key: 'proMsg',
+    //   success: (res) => {
+    //     setDetails(res.data || {})
+    //   },
+    // })
+   
+  },[])
 
   const curtainClose = () => {
     console.log(1222)
+    setopen(false)
+    setTipsOpen(false)
   }
 
   const handleChange = (val) => {
@@ -107,6 +136,7 @@ const DetailPage: React.FC = () => {
             proId: proDetails._id,
             skuId: curSku.skuId,
             buyNum: nums,
+            openId: userId
           },
         },
       }).then((res: any) => {
@@ -116,6 +146,8 @@ const DetailPage: React.FC = () => {
         setTimeout(() => {
           setToastOpen(false)
         }, 1000)
+      }).catch(err=>{
+        console.log(err)
       })
     } else {
       setopen(false)
@@ -136,6 +168,14 @@ const DetailPage: React.FC = () => {
   }
 
   const handleClick = (type: string) => {
+    console.log('...click')
+    if (!userId) {
+      Taro.navigateTo({
+        url: '/pages/login/index',
+      })
+      return
+    }
+
     setConfirmType(type)
     console.log(type, confirmType === 'buy')
     setopen(true)
@@ -144,6 +184,12 @@ const DetailPage: React.FC = () => {
 
   const handleSku = (item: any) => {
     setCurSku(item)
+  }
+
+  if(loading){
+    return (
+      <AtToast isOpened={loading} text='加载中' status='loading'></AtToast>
+    )
   }
 
   return (
@@ -159,7 +205,7 @@ const DetailPage: React.FC = () => {
             <Text>{proDetails.price}</Text>
           </Text>
         </View>
-        <View className='collection'>收藏+</View>
+        {/* <View className='collection'>收藏+</View> */}
       </View>
       <View className='pro-details'>
         {/* 关于商品 */}
@@ -249,12 +295,12 @@ const DetailPage: React.FC = () => {
           </View>
         </View>
         <View className='confirm'>
-          <AtButton type='primary' onClick={handleConfirm}>
-            确认
+          <AtButton type='primary' className='primary-btn' onClick={handleConfirm}>
+          确认
           </AtButton>
         </View>
       </AtFloatLayout>
-      <AtToast isOpened={toastOpen} text='成功加入购物车' duration={1000}></AtToast>
+      <AtToast isOpened={toastOpen} text='成功加入购物车' duration={800}></AtToast>
       <AtToast isOpened={tipsOpen} text={tipsText}></AtToast>
     </View>
   )

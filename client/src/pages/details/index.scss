@@ -131,15 +131,18 @@
 }
 .confirm{
   height: 90px;
-  position: fixed;
+  // position: absolute;
   width: 100%;
-  left: 0;
-  bottom:10px;
-  z-index: 3;
+  // left: 0;
+  // bottom:10px;
+  margin-top: 20%;
   .at-button--primary{
-    background-image: linear-gradient(135deg,#f2140c,#f2270c 70%,#f24d0c);
+    background: linear-gradient(135deg,#f2140c,#f2270c 70%,#f24d0c);
     border: none;
     margin: 0 30px;
+  }
+  .primary-btn{
+    background:#f2140c;
   }
 }
 

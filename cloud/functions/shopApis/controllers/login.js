@@ -21,8 +21,6 @@ class LoginController extends BaseController{
     })
   }
   
-<<<<<<< HEAD
-=======
   async getPhoneNumber(event){
     switch (event.action) {
       case 'getcellphone':{
@@ -41,7 +39,6 @@ async function getCellphone(event){
     list: [event.id], // 假设 event.openData.list 是一个 CloudID 字符串列表
   })  
   return {res,event};
->>>>>>> 14c0e0e1ee71b535cc3c21094f20e015a9173972
 }
 
 module.exports = LoginController

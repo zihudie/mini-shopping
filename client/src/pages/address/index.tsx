@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, Image } from '@tarojs/components'
-import Taro, { useDidShow, setStorage } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { AtSwipeAction } from 'taro-ui'
 import { callCloudFunction } from '@/helper/fetch'
 import 'taro-ui/dist/style/components/swipe-action.scss'
@@ -16,6 +16,8 @@ interface listType {
   isDefault: boolean
 }
 const AdressPage: React.FC = () => {
+  const $instance = getCurrentInstance()
+  const from = $instance.router?.params.from
   const [curId, setCurId] = useState('')
   const [addressList, setAddressList] = useState<listType[]>([
     {
@@ -72,19 +74,28 @@ const AdressPage: React.FC = () => {
       },
     }).then((result: any) => {
       // 成功之后进行刷新重新请求操作
-      console.log('删除成功')
+      console.log("操作成功。。。")
       getAddressLists()
     })
   }
 
   const handleEdit = (item) => {
+    console.log("item",item)
     Taro.setStorage({
       key: 'curAddressList',
       data: item,
     })
     Taro.navigateTo({ url: '/pages/address/details/index' })
   }
-
+ 
+  const selectItem = (item) => {
+    if(!from) return
+    Taro.setStorage({
+      key: 'curAddressList',
+      data: item
+    })
+    Taro.navigateTo({ url: '/pages/order/orderConfirm/index' })
+  }
   const addNewAddress = () => {
     Taro.removeStorage({
       key: 'curAddressList',
@@ -126,7 +137,7 @@ const AdressPage: React.FC = () => {
             options={settingOptions}
             key={item._id}
           >
-            <View className='adress-item'>
+            <View className='adress-item' onClick={()=>{selectItem(item)}}>
               <View className='m-left'>
                 <View className='name-tel'>
                   {item.name} <Text className='tel'>{handlePhone(item.tel)}</Text>
